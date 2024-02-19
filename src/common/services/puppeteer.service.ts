@@ -10,7 +10,6 @@ const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker');
 const UserAgent = require('user-agents');
 @Injectable()
 export class PuppeteerService {
-  private browser: Browser;
   constructor() {
     puppeteer.use(StealthPlugin());
     puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
@@ -26,8 +25,18 @@ export class PuppeteerService {
     );
   }
 
-  async onModuleInit() {
-    this.browser = await puppeteer.launch({
+  async getAvailableUsers({
+    fullName,
+    year,
+  }: {
+    fullName: string;
+    year: number;
+  }): Promise<string[]> {
+    const userAgent = new UserAgent();
+    const linkText = `Бали БПР ${year} року`;
+    const linkItem = '.sppb-column-addons .sppb-addon-title a';
+    const tableColumns = '.waffle  tbody tr';
+    const browser = await puppeteer.launch({
       executablePath: '/usr/bin/google-chrome',
       headless: true,
       ignoreHTTPSErrors: true,
@@ -73,24 +82,7 @@ export class PuppeteerService {
         '--use-mock-keychain',
       ],
     });
-  }
-
-  async onModuleDestroy() {
-    await this.browser.close();
-  }
-
-  async getAvailableUsers({
-    fullName,
-    year,
-  }: {
-    fullName: string;
-    year: number;
-  }): Promise<string[]> {
-    const userAgent = new UserAgent();
-    const linkText = `Бали БПР ${year} року`;
-    const linkItem = '.sppb-column-addons .sppb-addon-title a';
-    const tableColumns = '.waffle  tbody tr';
-    const page = await this.browser.newPage();
+    const page = await browser.newPage();
     try {
       await page.goto(API_URL);
       await page.setUserAgent(userAgent.toString());
@@ -139,6 +131,7 @@ export class PuppeteerService {
       throw e;
     } finally {
       await page.close();
+      await browser.close();
     }
   }
 
@@ -153,7 +146,53 @@ export class PuppeteerService {
     const linkText = `Бали БПР ${year} року`;
     const linkItem = '.sppb-column-addons .sppb-addon-title a';
     const tableColumns = '.waffle  tbody tr';
-    const page = await this.browser.newPage();
+    const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome',
+      headless: true,
+      ignoreHTTPSErrors: true,
+      defaultViewport: null,
+      userDataDir: './parser/cache',
+      args: [
+        '--lang=en-GB,en',
+        `--ignore-certificate-errors`,
+        '--autoplay-policy=user-gesture-required',
+        '--disable-background-networking',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-breakpad',
+        '--disable-client-side-phishing-detection',
+        '--disable-component-update',
+        '--disable-default-apps',
+        '--disable-dev-shm-usage',
+        '--disable-domain-reliability',
+        '--disable-extensions',
+        '--disable-features=AudioServiceOutOfProcess',
+        '--disable-hang-monitor',
+        '--disable-ipc-flooding-protection',
+        '--disable-notifications',
+        '--disable-offer-store-unmasked-wallet-cards',
+        '--disable-popup-blocking',
+        '--disable-print-preview',
+        '--disable-prompt-on-repost',
+        '--disable-renderer-backgrounding',
+        '--disable-setuid-sandbox',
+        '--disable-speech-api',
+        '--disable-sync',
+        '--hide-scrollbars',
+        '--ignore-gpu-blacklist',
+        '--metrics-recording-only',
+        '--mute-audio',
+        '--no-default-browser-check',
+        '--no-first-run',
+        '--no-pings',
+        '--no-sandbox',
+        '--no-zygote',
+        '--password-store=basic',
+        '--use-gl=swiftshader',
+        '--use-mock-keychain',
+      ],
+    });
+    const page = await browser.newPage();
     try {
       await page.goto(API_URL, {
         waitUntil: 'networkidle0',
@@ -200,6 +239,7 @@ export class PuppeteerService {
       throw e;
     } finally {
       await page.close();
+      await browser.close();
     }
   }
 }
