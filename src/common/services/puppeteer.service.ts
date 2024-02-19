@@ -28,7 +28,7 @@ export class PuppeteerService {
 
   async onModuleInit() {
     this.browser = await puppeteer.launch({
-      // executablePath: '/usr/bin/google-chrome',
+      executablePath: '/usr/bin/google-chrome',
       headless: true,
       ignoreHTTPSErrors: true,
       defaultViewport: null,
