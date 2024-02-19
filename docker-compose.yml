@@ -31,6 +31,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+      args:
+        - DATABASE_URL=${DATABASE_URL}
     networks:
       - bpr-network
     env_file:
@@ -40,7 +42,6 @@ services:
       - "3000:3000"
     environment:
       MYSQL_HOST: db
-      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${db}:${MYSQL_PORT}/${MYSQL_DB_NAME}?connection_limit=1"
     volumes:
       - ./logs:/app/logs
       - ./telegram-session.storage.json:/app/telegram-session.storage.json
