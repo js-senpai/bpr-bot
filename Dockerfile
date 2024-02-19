@@ -9,6 +9,8 @@ COPY . .
 RUN apt-get install openssl
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
+RUN yarn run migration:run
+RUN yarn run prisma:seed
 RUN yarn run build
 FROM  --platform=linux/amd64 node:18 AS runner
 USER root
