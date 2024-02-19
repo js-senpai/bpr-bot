@@ -4,20 +4,26 @@ services:
   bpr-bot-db:
     image: postgres:latest
     restart: always
-    env_file:
-      - .env
-    ports:
-      - '5435:5432'
-  bpr-bot:
-    build:
-      dockerfile: Dockerfile
-      context: .
-      args:
-        - DATABASE_URL=${DATABASE_URL}
     networks:
       - bpr-network
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bpr-bot-db:${POSTGRES_PORT}/bot_db?schema=public
+    ports:
+      - '5438:5432'
+    volumes:
+      - bpr-bot-db:/var/lib/postgresql/data
+  bpr-bot:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      - bpr-network
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bpr-bot-db:${POSTGRES_PORT}/bot_db?schema=public
     restart: always
     ports:
       - "3002:3000"

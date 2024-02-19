@@ -37,11 +37,10 @@ export class PuppeteerService {
     const linkItem = '.sppb-column-addons .sppb-addon-title a';
     const tableColumns = '.waffle  tbody tr';
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
-      headless: true,
+      executablePath: '/usr/bin/chromium',
       ignoreHTTPSErrors: true,
       defaultViewport: null,
-      userDataDir: './parser/cache',
+      // userDataDir: './parser/cache',
       args: [
         '--lang=en-GB,en',
         `--ignore-certificate-errors`,
@@ -147,11 +146,10 @@ export class PuppeteerService {
     const linkItem = '.sppb-column-addons .sppb-addon-title a';
     const tableColumns = '.waffle  tbody tr';
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
-      headless: true,
+      executablePath: '/usr/bin/chromium',
       ignoreHTTPSErrors: true,
       defaultViewport: null,
-      userDataDir: './parser/cache',
+      // userDataDir: './parser/cache',
       args: [
         '--lang=en-GB,en',
         `--ignore-certificate-errors`,
