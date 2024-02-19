@@ -1,14 +1,14 @@
-FROM --platform=linux/amd64  node:18-slim AS deps
+FROM --platform=linux/amd64  node:18 AS deps
 WORKDIR /app
 COPY package.json  ./
 RUN yarn install --frozen-lockfile --production=false
-FROM node:18-slim AS builder
+FROM node:18 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN apt-get install openssl
 RUN yarn run build
-FROM  --platform=linux/amd64 node:18-slim AS runner
+FROM  --platform=linux/amd64 node:18 AS runner
 USER root
 
 RUN mkdir -p /usr/src/app
