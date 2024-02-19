@@ -8,8 +8,6 @@ services:
       - .env
     ports:
       - '5435:5432'
-    volumes:
-      - db:/var/lib/postgresql/data
   bpr-bot:
     build:
       dockerfile: Dockerfile
