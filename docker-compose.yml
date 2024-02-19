@@ -20,7 +20,7 @@ services:
     ports:
       - '8081:80'
     env_file:
-      - .env
+      - .env-mysql
     environment:
       PMA_HOST: db
   bpr-bot:
