@@ -1,4 +1,5 @@
 FROM node:18-alpine AS deps
+RUN echo $DATABASE_URL
 WORKDIR /app
 RUN apk upgrade --update-cache --available && \
     rm -rf /var/cache/apk/*
