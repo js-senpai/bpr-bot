@@ -32,7 +32,7 @@ services:
       dockerfile: Dockerfile
       context: .
     environment:
-      - MYSQL_HOST=db
+      MYSQL_HOST: db
     networks:
       - bpr-network
     env_file:
