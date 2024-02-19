@@ -13,17 +13,7 @@ RUN yarn run prisma:seed
 RUN yarn run build
 FROM node:18-alpine AS runner
 WORKDIR /app
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
 USER root
-
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-RUN chmod -R 777 /usr/src/app
-
 # We don't need the standalone Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
@@ -35,5 +25,12 @@ RUN apt-get update && apt-get install gnupg wget -y && \
   apt-get update && \
   apt-get install google-chrome-stable -y --no-install-recommends && \
   rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+
+
+
 
 ENTRYPOINT [ "yarn", "run", "start:prod" ]
