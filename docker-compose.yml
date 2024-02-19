@@ -31,6 +31,12 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+      args:
+        - MYSQL_HOST=db
+        - MYSQL_PORT=${MYSQL_PORT}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_DB_NAME=${MYSQL_DB_NAME}
     networks:
       - bpr-network
     env_file:
@@ -38,8 +44,6 @@ services:
     restart: always
     ports:
       - "3000:3000"
-    environment:
-      MYSQL_HOST: db
     volumes:
       - ./logs:/app/logs
       - ./telegram-session.storage.json:/app/telegram-session.storage.json
