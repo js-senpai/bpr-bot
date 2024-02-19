@@ -15,7 +15,7 @@ services:
       - TZ=Europe/Kiev
   db-admin:
     depends_on:
-      - db
+      - bpr-bot-db
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: always
