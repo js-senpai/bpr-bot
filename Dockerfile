@@ -8,8 +8,6 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
 RUN yarn run migration:run
 RUN yarn run prisma:seed
 RUN yarn run build
