@@ -37,7 +37,5 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -r pptruser && useradd -rm -g pptruser -G audio,video pptruser
 
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
 
 ENTRYPOINT [ "yarn", "run", "start:prod" ]

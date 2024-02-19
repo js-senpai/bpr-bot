@@ -12,8 +12,6 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-      args:
-        - DATABASE_URL=${DATABASE_URL}
     networks:
       - bpr-network
     env_file:
