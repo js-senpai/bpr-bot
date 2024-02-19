@@ -1,16 +1,16 @@
 version: '3.2'
 
 services:
-  db:
-    image: mysql:latest
+  bpr-bot-db:
+    image: mysql:8.0
     command: ['mysqld','--character-set-server=utf8mb4', '--collation-server=utf8mb4_general_ci','--default-time-zone=+02:00','--default-authentication-plugin=mysql_native_password']
     restart: always
     networks:
       - bpr-network
     ports:
-      - '6604:3306'
+      - '6605:3306'
     env_file:
-      - .env-mysql
+      - mysql.env
     environment:
       - TZ=Europe/Kiev
   db-admin:
@@ -24,30 +24,28 @@ services:
     ports:
       - '8081:80'
     env_file:
-      - .env-mysql
+      - mysql.env
     environment:
-      PMA_HOST: db
+      PMA_HOST: bpr-bot-db
   bpr-bot:
     build:
       dockerfile: Dockerfile
       context: .
-    environment:
-      MYSQL_HOST: db
     networks:
       - bpr-network
     env_file:
       - .env
     restart: always
     ports:
-      - "3000:3000"
+      - "3002:3000"
     volumes:
       - ./logs:/app/logs
       - ./telegram-session.storage.json:/app/telegram-session.storage.json
       - ./parser:/app/parser
     depends_on:
-      - db
+      - bpr-bot-db
 volumes:
-  db:
+  bpr-bot-db:
 networks:
   bpr-network:
     driver: bridge
