@@ -32,11 +32,13 @@ services:
       dockerfile: Dockerfile
       context: .
       args:
-        - MYSQL_HOST=${db}
+        - MYSQL_HOST=db
         - MYSQL_PORT=${MYSQL_PORT}
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - MYSQL_DB_NAME=${MYSQL_DB_NAME}
+    environment:
+      - MYSQL_HOST=db
     networks:
       - bpr-network
     env_file:

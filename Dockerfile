@@ -8,12 +8,6 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ARG MYSQL_HOST
-ARG MYSQL_PORT
-ARG MYSQL_USER
-ARG MYSQL_PASSWORD
-ARG MYSQL_DB_NAME
-ENV DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?connection_limit=1"
 RUN yarn run migration:run
 RUN yarn run prisma:seed
 RUN yarn run build
