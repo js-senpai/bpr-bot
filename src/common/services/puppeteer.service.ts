@@ -37,7 +37,7 @@ export class PuppeteerService {
     const linkItem = '.sppb-column-addons .sppb-addon-title a';
     const tableColumns = '.waffle  tbody tr';
     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
+      // executablePath: '/usr/bin/google-chrome',
       headless: true,
       ignoreHTTPSErrors: true,
       defaultViewport: null,
