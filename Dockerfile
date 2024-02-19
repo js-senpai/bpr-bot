@@ -7,6 +7,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN apt-get install openssl
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 RUN yarn run build
 FROM  --platform=linux/amd64 node:18 AS runner
 USER root
