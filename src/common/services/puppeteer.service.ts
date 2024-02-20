@@ -57,6 +57,9 @@ export class PuppeteerService {
     fullName: string;
     year: number;
   }): Promise<{ name: string; scores: string }[]> {
+    if (!PuppeteerService.cluster) {
+      await this.initCluster();
+    }
     const cluster = PuppeteerService.cluster;
     await cluster.task(async ({ page, data: { url, choosenYear } }) => {
       // const userAgent = new UserAgent();
