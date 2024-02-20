@@ -93,7 +93,6 @@ export class TelegramStartHandlerService {
         return;
       }
     } else {
-      console.log(getUser);
       return await WelcomeAction({
         isAdmin: getUser.isAdmin,
         i18n: this.i18n,

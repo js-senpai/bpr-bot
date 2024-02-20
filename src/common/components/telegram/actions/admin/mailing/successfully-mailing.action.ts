@@ -13,7 +13,7 @@ export const SuccessfullyMailingAction = async ({
   i18n: I18nService;
 }): Promise<void> => {
   await ctx.reply(
-    await i18n.translate('telegram.WRITE_MAIL_MESSAGE', {
+    await i18n.translate('telegram.SENT_MAIL_SUCCESSFULLY', {
       lang,
     }),
     {
