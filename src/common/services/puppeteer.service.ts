@@ -98,9 +98,9 @@ export class PuppeteerService {
     const browser = PuppeteerService.browser;
     const page = await browser.newPage();
     try {
-      await page.goto(API_URL);
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
+      await page.goto(API_URL);
       const link = await page.$$eval(
         linkItem,
         (item, linkText) => {
@@ -114,9 +114,9 @@ export class PuppeteerService {
         },
         linkText,
       );
-      await page.goto(link);
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
+      await page.goto(link);
       const fullNameList = await page.$$eval(
         tableColumns,
         (rows, [fullName, year]: [string, number]) => {
@@ -163,11 +163,9 @@ export class PuppeteerService {
     const browser = PuppeteerService.browser;
     const page = await browser.newPage();
     try {
-      await page.goto(API_URL, {
-        waitUntil: 'networkidle0',
-      });
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
+      await page.goto(API_URL);
       const link = await page.$$eval(
         linkItem,
         (item, linkText) => {
@@ -181,9 +179,9 @@ export class PuppeteerService {
         },
         linkText,
       );
-      await page.goto(link);
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
+      await page.goto(link);
       return await page.$$eval(
         tableColumns,
         (rows, [fullName, year]: [string, number]) => {
