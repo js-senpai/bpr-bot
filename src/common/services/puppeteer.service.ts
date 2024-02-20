@@ -33,12 +33,11 @@ export class PuppeteerService {
     if (!PuppeteerService.cluster) {
       PuppeteerService.cluster = await Cluster.launch({
         puppeteer,
-        maxConcurrency: 2,
-        concurrency: Cluster.CONCURRENCY_PAGE,
+        maxConcurrency: 1,
+        concurrency: Cluster.CONCURRENCY_BROWSER,
         timeout: 1000 * 60 * 10,
         puppeteerOptions: PUPPETEER_CONFIG,
-        retryLimit: 2,
-        retryDelay: 500,
+        monitor: true,
       });
     }
   }
