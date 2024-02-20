@@ -30,4 +30,5 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/.env ./.env
 COPY --from=builder /app/telegram-session.storage.json ./telegram-session.storage.json
+COPY --from=builder /app/parser ./parser
 ENTRYPOINT [ "yarn", "run", "start:prod" ]
