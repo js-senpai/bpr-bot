@@ -3,7 +3,7 @@ export const PUPPETEER_CONFIG = {
   headless: true,
   ignoreHTTPSErrors: true,
   defaultViewport: null,
-  userDataDir: './parser/cache',
+  // userDataDir: './parser/cache',
   args: [
     '--lang=en-GB,en',
     '--no-sandbox',
