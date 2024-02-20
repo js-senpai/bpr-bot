@@ -57,7 +57,7 @@ export class TelegramKeyboardsHandlerService {
         });
       }
     } else {
-      if (session?.enableMailing) {
+      if (session?.enableWritingMail) {
         return await this.telegramMailingAction.sendMessages({
           message,
           ctx,
@@ -108,10 +108,12 @@ export class TelegramKeyboardsHandlerService {
           i18n: this.i18n,
         });
         session.enableMailing = true;
+        session.enableWritingMail = true;
         return;
       }
       if (getKey === 'CANCEL') {
         session.enableMailing = false;
+        session.enableWritingMail = false;
         return await DisableMailingAction({
           ctx,
           i18n: this.i18n,

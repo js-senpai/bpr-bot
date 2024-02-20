@@ -7,6 +7,7 @@ export interface TelegramContext extends Scenes.SceneContext, Context {
     searching: boolean;
     availableNames?: { name: string; scores: string }[];
     enableMailing?: boolean;
+    enableWritingMail?: boolean;
     steps: {
       passedPhoneRegistration: boolean;
       passedYearRegistration: boolean;

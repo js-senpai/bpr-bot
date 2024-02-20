@@ -13,6 +13,7 @@ export class TelegramMailingActionService {
 
   async sendMessages({ message, ctx }: ITelegramKeyboardBody) {
     const {
+      session,
       update: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -38,6 +39,7 @@ export class TelegramMailingActionService {
         telegramId: true,
       },
     });
+    session.enableWritingMail = false;
     for (const { telegramId } of getUsers) {
       await ctx.sendMessage(message, {
         parse_mode: 'HTML',
