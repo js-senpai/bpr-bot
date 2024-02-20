@@ -30,7 +30,7 @@ export class PuppeteerService {
       executablePath: '/usr/bin/google-chrome',
       ignoreHTTPSErrors: true,
       defaultViewport: null,
-      // userDataDir: './parser/cache',
+      userDataDir: './parser/cache',
       args: [
         '--lang=en-GB,en',
         `--ignore-certificate-errors`,
