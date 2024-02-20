@@ -97,6 +97,7 @@ export class TelegramRegistrationActionService {
         i18n: this.i18n,
       });
       session.steps.enableFullNameWrite = true;
+      return;
     }
     session.searching = true;
     session.steps.enableFullNameWrite = false;
@@ -119,19 +120,20 @@ export class TelegramRegistrationActionService {
         i18n: this.i18n,
       });
     }
+    session.availableNames = getFullNames;
     return await ChooseFullNameAction({
       ctx,
       i18n: this.i18n,
-      fullNames: getFullNames,
+      fullNames: getFullNames.map(({ name }) => name),
     });
   }
 
   async acceptFullName({
     ctx,
-    fieldName,
+    nameIndex,
   }: {
     ctx: TelegramContext;
-    fieldName: string;
+    nameIndex: string;
   }) {
     const {
       session,
@@ -152,7 +154,6 @@ export class TelegramRegistrationActionService {
         id: true,
       },
     });
-    session.userInfo.choosenFullName = session?.availableNames[fieldName];
     if (!getUser) {
       const newUser = await this.prismaService.user.create({
         data: {
@@ -181,30 +182,18 @@ export class TelegramRegistrationActionService {
       }
     }
 
-    session.searching = true;
-    await SearchingAction({
-      ctx,
-      i18n: this.i18n,
-    });
-    const getScores = await this.puppeteerService.getScores({
-      fullName: session.userInfo.choosenFullName,
-      year: +session.userInfo.choosenYear,
-    });
-    await SearchingFinishedAction({
-      ctx,
-      i18n: this.i18n,
-    });
-    session.searching = false;
-    if (!getScores) {
+    if (!session?.availableNames[nameIndex]) {
       return await NotFoundResultsAction({
         ctx,
         i18n: this.i18n,
       });
     }
+    const getScores = session.availableNames[nameIndex];
+    session.userInfo.choosenFullName = getScores.name;
     return await GetScoreResultAction({
       ctx,
       i18n: this.i18n,
-      scores: getScores,
+      scores: getScores.scores,
     });
   }
 

@@ -13,7 +13,6 @@ export const ChooseFullNameAction = async ({
   i18n: I18nService;
   fullNames: string[];
 }): Promise<void> => {
-  ctx.session.availableNames = {};
   await ctx.reply(
     await i18n.translate('telegram.ACCEPT_FULL_NAME', {
       lang,
@@ -24,7 +23,6 @@ export const ChooseFullNameAction = async ({
         resize_keyboard: true,
         inline_keyboard: [
           fullNames.map((name, index) => {
-            ctx.session.availableNames[index] = name;
             return {
               text: name,
               callback_data: JSON.stringify({

@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-extra';
+import { addExtra } from 'puppeteer-extra';
 import { Injectable } from '@nestjs/common';
 import { Browser, DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from 'puppeteer';
 import { API_URL } from '../constants/api.constants';
@@ -8,101 +8,64 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const UserAgent = require('user-agents');
+import vanillaPuppeteer from 'puppeteer';
+import { Cluster } from 'puppeteer-cluster';
+import { PUPPETEER_CONFIG } from '../constants/puppeteer.constants';
+const puppeteer = addExtra(vanillaPuppeteer);
+puppeteer.use(StealthPlugin());
+// puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')());
+// puppeteer.use(
+//   // eslint-disable-next-line @typescript-eslint/no-var-requires
+//   require('puppeteer-extra-plugin-block-resources')({
+//     blockedTypes: new Set(['image']),
+//   }),
+// );
 @Injectable()
 export class PuppeteerService {
-  private static browser: Browser;
+  private static cluster: Cluster;
 
   constructor() {
-    this.initBrowser();
+    this.initCluster();
   }
-  private async initBrowser() {
-    if (!PuppeteerService.browser) {
-      puppeteer.use(StealthPlugin());
-      puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')());
-      puppeteer.use(
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('puppeteer-extra-plugin-block-resources')({
-          blockedTypes: new Set(['image']),
-        }),
-      );
-
-      PuppeteerService.browser = await puppeteer.launch({
-        executablePath: '/usr/bin/google-chrome',
-        ignoreHTTPSErrors: true,
-        defaultViewport: null,
-        userDataDir: './parser/cache',
-        args: [
-          '--lang=en-GB,en',
-          `--ignore-certificate-errors`,
-          '--autoplay-policy=user-gesture-required',
-          '--disable-background-networking',
-          '--disable-background-timer-throttling',
-          '--disable-backgrounding-occluded-windows',
-          '--disable-breakpad',
-          '--disable-client-side-phishing-detection',
-          '--disable-component-update',
-          '--disable-default-apps',
-          '--disable-dev-shm-usage',
-          '--disable-domain-reliability',
-          '--disable-extensions',
-          '--disable-features=AudioServiceOutOfProcess',
-          '--disable-hang-monitor',
-          '--disable-ipc-flooding-protection',
-          '--disable-notifications',
-          '--disable-offer-store-unmasked-wallet-cards',
-          '--disable-popup-blocking',
-          '--disable-print-preview',
-          '--disable-prompt-on-repost',
-          '--disable-renderer-backgrounding',
-          '--disable-setuid-sandbox',
-          '--disable-speech-api',
-          '--disable-sync',
-          '--hide-scrollbars',
-          '--ignore-gpu-blacklist',
-          '--metrics-recording-only',
-          '--mute-audio',
-          '--no-default-browser-check',
-          '--no-first-run',
-          '--no-pings',
-          '--no-sandbox',
-          '--no-zygote',
-          '--password-store=basic',
-          '--use-gl=swiftshader',
-          '--use-mock-keychain',
-        ],
+  private async initCluster() {
+    if (!PuppeteerService.cluster) {
+      PuppeteerService.cluster = await Cluster.launch({
+        puppeteer,
+        maxConcurrency: 2,
+        concurrency: Cluster.CONCURRENCY_PAGE,
+        timeout: 1000 * 60 * 10,
+        puppeteerOptions: PUPPETEER_CONFIG,
+        retryLimit: 2,
+        retryDelay: 500,
       });
     }
   }
 
   async onModuleDestroy() {
-    if (PuppeteerService.browser) {
-      await PuppeteerService.browser.close();
-      PuppeteerService.browser = null;
+    if (PuppeteerService.cluster) {
+      await PuppeteerService.cluster.idle();
+      await PuppeteerService.cluster.close();
+      PuppeteerService.cluster = null;
     }
   }
-
   async getAvailableUsers({
     fullName,
     year,
   }: {
     fullName: string;
     year: number;
-  }): Promise<string[]> {
-    const userAgent = new UserAgent();
-    const linkText = `Бали БПР ${year} року`;
-    const linkItem = '.sppb-column-addons .sppb-addon-title a';
-    const tableColumns = '.waffle  tbody tr';
-    await this.initBrowser();
-    const browser = PuppeteerService.browser;
-    const page = await browser.newPage();
-    try {
-      await page.setUserAgent(userAgent.toString());
+  }): Promise<{ name: string; scores: string }[]> {
+    const cluster = PuppeteerService.cluster;
+    await cluster.task(async ({ page, data: { url, choosenYear } }) => {
+      // const userAgent = new UserAgent();
+      const linkText = `Бали БПР ${choosenYear} року`;
+      const linkItem = '.sppb-column-addons .sppb-addon-title a';
+      const tableColumns = '.waffle  tbody tr';
+      // await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
-      await page.goto(API_URL, {
-        timeout: 1000 * 60 * 10,
-      });
+      await page.goto(url);
       const link = await page.$$eval(
         linkItem,
         (item, linkText) => {
@@ -116,11 +79,8 @@ export class PuppeteerService {
         },
         linkText,
       );
-      await page.setUserAgent(userAgent.toString());
-      await page.setJavaScriptEnabled(false);
-      await page.goto(link, {
-        timeout: 1000 * 60 * 10,
-      });
+      // await page.setUserAgent(userAgent.toString());
+      await page.goto(link);
       const fullNameList = await page.$$eval(
         tableColumns,
         (rows, [fullName, year]: [string, number]) => {
@@ -134,86 +94,31 @@ export class PuppeteerService {
                 .trim()
                 .split(' ');
               if (fioParts[0] === lastName && fioParts[1] === firstName) {
-                a.push(fioCell.textContent.trim());
+                const scoreCell = cells[+year === 2024 ? 4 : 6];
+                a.push({
+                  name: fioCell.textContent.trim(),
+                  scores: scoreCell?.textContent?.trim() || 'Балли не знайдені',
+                });
               }
             }
 
             return a;
           }, []);
         },
-        [fullName, year],
+        [fullName, choosenYear],
       );
 
-      return [...new Set(fullNameList)] as string[];
-    } catch (e) {
-      throw e;
-    } finally {
-      await page.close();
-    }
-  }
-
-  async getScores({
-    fullName,
-    year,
-  }: {
-    fullName: string;
-    year: number;
-  }): Promise<string> {
-    const userAgent = new UserAgent();
-    const linkText = `Бали БПР ${year} року`;
-    const linkItem = '.sppb-column-addons .sppb-addon-title a';
-    const tableColumns = '.waffle  tbody tr';
-    await this.initBrowser();
-    const browser = PuppeteerService.browser;
-    const page = await browser.newPage();
+      return [
+        ...new Map(fullNameList.map((item) => [item['name'], item])).values(),
+      ];
+    });
     try {
-      await page.setUserAgent(userAgent.toString());
-      await page.setJavaScriptEnabled(false);
-      await page.goto(API_URL, {
-        timeout: 1000 * 60 * 10,
-      });
-      const link = await page.$$eval(
-        linkItem,
-        (item, linkText) => {
-          const foundAnchor = item.find(
-            (anchor) => anchor.textContent.trim() === linkText,
-          );
-          if (foundAnchor) {
-            return foundAnchor.href;
-          }
-          return null;
-        },
-        linkText,
-      );
-      await page.setUserAgent(userAgent.toString());
-      await page.setJavaScriptEnabled(false);
-      await page.goto(link, {
-        timeout: 1000 * 60 * 10,
-      });
-      return await page.$$eval(
-        tableColumns,
-        (rows, [fullName, year]: [string, number]) => {
-          return rows.reduce((a, b) => {
-            const cells = b.querySelectorAll('td');
-            const fioCell = cells[+year === 2024 ? 3 : 5];
-            if (fioCell?.textContent) {
-              const currenFullName = fioCell.textContent.toLowerCase().trim();
-              const scoreCell = cells[+year === 2024 ? 4 : 6];
-              if (scoreCell?.textContent) {
-                if (currenFullName === fullName) {
-                  a = scoreCell.textContent.trim();
-                }
-              }
-            }
-            return a;
-          }, '');
-        },
-        [fullName.toLowerCase(), year],
-      );
+      return await cluster.execute({ url: API_URL, choosenYear: year });
     } catch (e) {
       throw e;
     } finally {
-      await page.close();
+      await cluster.idle();
+      await cluster.close();
     }
   }
 }

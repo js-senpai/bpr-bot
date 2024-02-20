@@ -25,7 +25,7 @@ export class TelegramInlineHandlerService {
     if (type === TelegramActionsEnums.CHOOSE_FULL_NAME) {
       return await this.telegramRegistrationAction.acceptFullName({
         ctx,
-        fieldName: value,
+        nameIndex: value,
       });
     }
   }

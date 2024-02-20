@@ -41,6 +41,7 @@
     "nestjs-telegraf": "^2.7.0",
     "prisma": "^5.9.1",
     "puppeteer": "^22.1.0",
+    "puppeteer-cluster": "^0.23.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-adblocker": "^2.13.6",
     "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",

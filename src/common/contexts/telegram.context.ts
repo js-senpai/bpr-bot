@@ -5,7 +5,7 @@ import { Update } from 'telegraf/typings/core/types/typegram';
 export interface TelegramContext extends Scenes.SceneContext, Context {
   session: SceneSession<SceneSessionData> & {
     searching: boolean;
-    availableNames?: { [key: string]: string };
+    availableNames?: { name: string; scores: string }[];
     enableMailing?: boolean;
     steps: {
       passedPhoneRegistration: boolean;
