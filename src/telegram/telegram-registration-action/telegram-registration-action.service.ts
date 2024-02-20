@@ -19,6 +19,7 @@ import { GetFullNameAction } from '../../common/components/telegram/actions/user
 import { NotFoundResultsAction } from '../../common/components/telegram/actions/errors/not-found-results.action';
 import { GetScoreResultAction } from '../../common/components/telegram/actions/user/scores/get-score-result.action';
 import { ShareBotAction } from '../../common/components/telegram/actions/user/common/share-bot.action';
+import { ErrorSearchAction } from '../../common/components/telegram/actions/errors/error-search.action';
 
 @Injectable()
 export class TelegramRegistrationActionService {
@@ -105,10 +106,20 @@ export class TelegramRegistrationActionService {
       ctx,
       i18n: this.i18n,
     });
-    const getFullNames = await this.puppeteerService.getAvailableUsers({
-      fullName: message,
-      year: +session.userInfo.choosenYear,
-    });
+    let getFullNames = [];
+    try {
+      getFullNames = [
+        ...(await this.puppeteerService.getAvailableUsers({
+          fullName: message,
+          year: +session.userInfo.choosenYear,
+        })),
+      ];
+    } catch (e) {
+      return await ErrorSearchAction({
+        ctx,
+        i18n: this.i18n,
+      });
+    }
     await SearchingFinishedAction({
       ctx,
       i18n: this.i18n,
@@ -198,7 +209,6 @@ export class TelegramRegistrationActionService {
   }
 
   async shareBot(ctx: TelegramContext) {
-    console.log(ctx);
     const {
       update: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -17,6 +17,7 @@
   "WRITE_MAIL_MESSAGE": "Введіть текст розсилки нижче \uD83D\uDC47",
   "SENT_MAIL_SUCCESSFULLY": "Повідомлення успішно надіслани \uD83D\uDC4D",
   "CANCEL_MAIL": "Розсилка успішно скасована \uD83D\uDC4D",
+  "ERROR_SEARCH": "Невідома помилка при пошуку \uD83E\uDD15. Сбробуйте ще раз",
   "BUTTONS": {
     "KEYBOARD_BUTTONS": {
       "SHARE_PHONE": "\uD83D\uDCF1 Поділитися контактом",
