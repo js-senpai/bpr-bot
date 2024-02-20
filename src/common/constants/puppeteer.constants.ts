@@ -1,5 +1,5 @@
 export const PUPPETEER_CONFIG = {
-  // executablePath: '/usr/bin/google-chrome',
+  executablePath: '/usr/bin/google-chrome',
   headless: true,
   ignoreHTTPSErrors: true,
   defaultViewport: null,
