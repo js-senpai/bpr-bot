@@ -13,15 +13,15 @@ import { Cluster } from 'puppeteer-cluster';
 import { PUPPETEER_CONFIG } from '../constants/puppeteer.constants';
 const puppeteer = addExtra(vanillaPuppeteer);
 puppeteer.use(StealthPlugin());
-// puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')());
-// puppeteer.use(
-//   // eslint-disable-next-line @typescript-eslint/no-var-requires
-//   require('puppeteer-extra-plugin-block-resources')({
-//     blockedTypes: new Set(['image']),
-//   }),
-// );
+puppeteer.use(
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require('puppeteer-extra-plugin-block-resources')({
+    blockedTypes: new Set(['image']),
+  }),
+);
 @Injectable()
 export class PuppeteerService {
   private static cluster: Cluster;
@@ -33,11 +33,10 @@ export class PuppeteerService {
     if (!PuppeteerService.cluster) {
       PuppeteerService.cluster = await Cluster.launch({
         puppeteer,
-        maxConcurrency: 1,
+        maxConcurrency: 2,
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         timeout: 1000 * 60 * 10,
         puppeteerOptions: PUPPETEER_CONFIG,
-        monitor: true,
       });
     }
   }
@@ -61,11 +60,11 @@ export class PuppeteerService {
     }
     const cluster = PuppeteerService.cluster;
     await cluster.task(async ({ page, data: { url, choosenYear } }) => {
-      // const userAgent = new UserAgent();
+      const userAgent = new UserAgent();
       const linkText = `Бали БПР ${choosenYear} року`;
       const linkItem = '.sppb-column-addons .sppb-addon-title a';
       const tableColumns = '.waffle  tbody tr';
-      // await page.setUserAgent(userAgent.toString());
+      await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
       await page.goto(url);
       const link = await page.$$eval(
