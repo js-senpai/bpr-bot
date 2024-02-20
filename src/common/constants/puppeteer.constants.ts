@@ -6,6 +6,8 @@ export const PUPPETEER_CONFIG = {
   userDataDir: './parser/cache',
   args: [
     '--lang=en-GB,en',
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
     // `--ignore-certificate-errors`,
     // '--autoplay-policy=user-gesture-required',
     // '--disable-background-networking',
@@ -35,7 +37,6 @@ export const PUPPETEER_CONFIG = {
     // '--no-default-browser-check',
     // '--no-first-run',
     // '--no-pings',
-    // '--no-sandbox',
     // '--no-zygote',
     // '--password-store=basic',
     // '--use-gl=swiftshader',
