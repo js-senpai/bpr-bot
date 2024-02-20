@@ -43,6 +43,17 @@ export class TelegramKeyboardsHandlerService {
         id: true,
       },
     });
+    const getAllButtonsKeys = await this.i18n.translate(
+      'telegram.BUTTONS.KEYBOARD_BUTTONS',
+    );
+    // Get key
+    let getKey = 'not_set';
+    for (const [key, value] of Object.entries(getAllButtonsKeys)) {
+      if (value === message) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getKey = key;
+      }
+    }
     if (!checkAdmin) {
       if (session?.steps?.enableYearWrite) {
         return await this.telegramRegistrationAction.setYear({
@@ -57,7 +68,7 @@ export class TelegramKeyboardsHandlerService {
         });
       }
     } else {
-      if (session?.enableWritingMail) {
+      if (session?.enableWritingMail && getKey !== 'CANCEL') {
         return await this.telegramMailingAction.sendMessages({
           message,
           ctx,
@@ -65,17 +76,6 @@ export class TelegramKeyboardsHandlerService {
       }
     }
 
-    const getAllButtonsKeys = await this.i18n.translate(
-      'telegram.BUTTONS.KEYBOARD_BUTTONS',
-    );
-    // Get key
-    let getKey = 'not_set';
-    for (const [key, value] of Object.entries(getAllButtonsKeys)) {
-      if (value === message) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        getKey = key;
-      }
-    }
     if (!checkAdmin) {
       if (getKey === 'TRY_AGAIN') {
         session.steps.passedYearRegistration = false;
