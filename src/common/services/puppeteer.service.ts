@@ -10,7 +10,11 @@ const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker');
 const UserAgent = require('user-agents');
 @Injectable()
 export class PuppeteerService {
+  private browser: Browser;
   constructor() {
+    this.initBrowser();
+  }
+  private async initBrowser() {
     puppeteer.use(StealthPlugin());
     puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,24 +23,10 @@ export class PuppeteerService {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('puppeteer-extra-plugin-block-resources')({
         blockedTypes: new Set(['image']),
-        // Optionally enable Cooperative Mode for several request interceptors
-        // interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY,
       }),
     );
-  }
 
-  async getAvailableUsers({
-    fullName,
-    year,
-  }: {
-    fullName: string;
-    year: number;
-  }): Promise<string[]> {
-    const userAgent = new UserAgent();
-    const linkText = `Бали БПР ${year} року`;
-    const linkItem = '.sppb-column-addons .sppb-addon-title a';
-    const tableColumns = '.waffle  tbody tr';
-    const browser = await puppeteer.launch({
+    this.browser = await puppeteer.launch({
       executablePath: '/usr/bin/google-chrome',
       ignoreHTTPSErrors: true,
       defaultViewport: null,
@@ -81,7 +71,24 @@ export class PuppeteerService {
         '--use-mock-keychain',
       ],
     });
-    const page = await browser.newPage();
+  }
+
+  async onModuleDestroy() {
+    await this.browser.close();
+  }
+
+  async getAvailableUsers({
+    fullName,
+    year,
+  }: {
+    fullName: string;
+    year: number;
+  }): Promise<string[]> {
+    const userAgent = new UserAgent();
+    const linkText = `Бали БПР ${year} року`;
+    const linkItem = '.sppb-column-addons .sppb-addon-title a';
+    const tableColumns = '.waffle  tbody tr';
+    const page = await this.browser.newPage();
     try {
       await page.goto(API_URL);
       await page.setUserAgent(userAgent.toString());
@@ -130,7 +137,6 @@ export class PuppeteerService {
       throw e;
     } finally {
       await page.close();
-      await browser.close();
     }
   }
 
@@ -145,52 +151,7 @@ export class PuppeteerService {
     const linkText = `Бали БПР ${year} року`;
     const linkItem = '.sppb-column-addons .sppb-addon-title a';
     const tableColumns = '.waffle  tbody tr';
-    const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
-      ignoreHTTPSErrors: true,
-      defaultViewport: null,
-      // userDataDir: './parser/cache',
-      args: [
-        '--lang=en-GB,en',
-        `--ignore-certificate-errors`,
-        '--autoplay-policy=user-gesture-required',
-        '--disable-background-networking',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-breakpad',
-        '--disable-client-side-phishing-detection',
-        '--disable-component-update',
-        '--disable-default-apps',
-        '--disable-dev-shm-usage',
-        '--disable-domain-reliability',
-        '--disable-extensions',
-        '--disable-features=AudioServiceOutOfProcess',
-        '--disable-hang-monitor',
-        '--disable-ipc-flooding-protection',
-        '--disable-notifications',
-        '--disable-offer-store-unmasked-wallet-cards',
-        '--disable-popup-blocking',
-        '--disable-print-preview',
-        '--disable-prompt-on-repost',
-        '--disable-renderer-backgrounding',
-        '--disable-setuid-sandbox',
-        '--disable-speech-api',
-        '--disable-sync',
-        '--hide-scrollbars',
-        '--ignore-gpu-blacklist',
-        '--metrics-recording-only',
-        '--mute-audio',
-        '--no-default-browser-check',
-        '--no-first-run',
-        '--no-pings',
-        '--no-sandbox',
-        '--no-zygote',
-        '--password-store=basic',
-        '--use-gl=swiftshader',
-        '--use-mock-keychain',
-      ],
-    });
-    const page = await browser.newPage();
+    const page = await this.browser.newPage();
     try {
       await page.goto(API_URL, {
         waitUntil: 'networkidle0',
@@ -237,7 +198,6 @@ export class PuppeteerService {
       throw e;
     } finally {
       await page.close();
-      await browser.close();
     }
   }
 }
