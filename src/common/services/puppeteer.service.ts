@@ -34,8 +34,8 @@ export class PuppeteerService {
       PuppeteerService.cluster = await Cluster.launch({
         puppeteer,
         maxConcurrency: 2,
-        concurrency: Cluster.CONCURRENCY_PAGE,
-        timeout: 1000 * 60 * 5,
+        concurrency: Cluster.CONCURRENCY_CONTEXT,
+        timeout: 1000 * 60 * 3,
         puppeteerOptions: PUPPETEER_CONFIG,
       });
     }
