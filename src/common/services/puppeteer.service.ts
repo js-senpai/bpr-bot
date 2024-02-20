@@ -24,31 +24,29 @@ puppeteer.use(
 );
 @Injectable()
 export class PuppeteerService {
-  private static cluster: Cluster;
+  // private static cluster: Cluster;
 
-  constructor() {
-    this.initCluster();
-  }
-  private async initCluster() {
-    if (!PuppeteerService.cluster) {
-      PuppeteerService.cluster = await Cluster.launch({
-        puppeteer,
-        maxConcurrency: 2,
-        concurrency: Cluster.CONCURRENCY_PAGE,
-        timeout: 1000 * 60 * 3,
-        puppeteerOptions: PUPPETEER_CONFIG,
-        monitor: false,
-      });
-    }
-  }
-
-  async onModuleDestroy() {
-    if (PuppeteerService.cluster) {
-      await PuppeteerService.cluster.idle();
-      await PuppeteerService.cluster.close();
-      PuppeteerService.cluster = null;
-    }
-  }
+  // constructor() {
+  //   this.initCluster();
+  // }
+  // private async initCluster() {
+  //   if (!PuppeteerService.cluster) {
+  //     PuppeteerService.cluster = await Cluster.launch({
+  //       puppeteer,
+  //       concurrency: Cluster.CONCURRENCY_PAGE,
+  //       puppeteerOptions: PUPPETEER_CONFIG,
+  //       monitor: false,
+  //     });
+  //   }
+  // }
+  //
+  // async onModuleDestroy() {
+  //   if (PuppeteerService.cluster) {
+  //     await PuppeteerService.cluster.idle();
+  //     await PuppeteerService.cluster.close();
+  //     PuppeteerService.cluster = null;
+  //   }
+  // }
   async getAvailableUsers({
     fullName,
     year,
@@ -56,16 +54,21 @@ export class PuppeteerService {
     fullName: string;
     year: number;
   }): Promise<{ name: string; scores: string }[]> {
-    if (!PuppeteerService.cluster) {
-      await this.initCluster();
-    }
-    const cluster = PuppeteerService.cluster;
+    // if (!PuppeteerService.cluster) {
+    //   await this.initCluster();
+    // }
+    const cluster = await Cluster.launch({
+      puppeteer,
+      concurrency: Cluster.CONCURRENCY_PAGE,
+      puppeteerOptions: PUPPETEER_CONFIG,
+      monitor: false,
+    });
     await cluster.task(async ({ page, data: { url, choosenYear } }) => {
       const userAgent = new UserAgent();
       const linkText = `Бали БПР ${choosenYear} року`;
       const linkItem = '.sppb-column-addons .sppb-addon-title a';
       const tableColumns = '.waffle  tbody tr';
-      await page.setUserAgent(userAgent.toString());
+      // await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
       await page.goto(url);
       const link = await page.$$eval(
@@ -118,6 +121,9 @@ export class PuppeteerService {
       return await cluster.execute({ url: API_URL, choosenYear: year });
     } catch (e) {
       throw e;
+    } finally {
+      await cluster.idle();
+      await cluster.close();
     }
   }
 }
