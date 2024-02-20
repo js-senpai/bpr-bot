@@ -100,7 +100,9 @@ export class PuppeteerService {
     try {
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
-      await page.goto(API_URL);
+      await page.goto(API_URL, {
+        timeout: 1000 * 60 * 10,
+      });
       const link = await page.$$eval(
         linkItem,
         (item, linkText) => {
@@ -116,7 +118,9 @@ export class PuppeteerService {
       );
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
-      await page.goto(link);
+      await page.goto(link, {
+        timeout: 1000 * 60 * 10,
+      });
       const fullNameList = await page.$$eval(
         tableColumns,
         (rows, [fullName, year]: [string, number]) => {
@@ -165,7 +169,9 @@ export class PuppeteerService {
     try {
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
-      await page.goto(API_URL);
+      await page.goto(API_URL, {
+        timeout: 1000 * 60 * 10,
+      });
       const link = await page.$$eval(
         linkItem,
         (item, linkText) => {
@@ -181,7 +187,9 @@ export class PuppeteerService {
       );
       await page.setUserAgent(userAgent.toString());
       await page.setJavaScriptEnabled(false);
-      await page.goto(link);
+      await page.goto(link, {
+        timeout: 1000 * 60 * 10,
+      });
       return await page.$$eval(
         tableColumns,
         (rows, [fullName, year]: [string, number]) => {
