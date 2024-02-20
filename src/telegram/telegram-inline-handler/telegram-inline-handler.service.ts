@@ -11,12 +11,16 @@ export class TelegramInlineHandlerService {
 
   async actionHandler(ctx: TelegramContext): Promise<void> {
     const {
+      session,
       update: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         callback_query: { data },
       },
     } = ctx;
+    if (session?.searching) {
+      return;
+    }
     const { type = 'notSet', value } = JSON.parse(data);
     if (type === TelegramActionsEnums.CHOOSE_FULL_NAME) {
       return await this.telegramRegistrationAction.acceptFullName({

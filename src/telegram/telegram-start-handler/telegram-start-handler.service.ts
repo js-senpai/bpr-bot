@@ -29,6 +29,9 @@ export class TelegramStartHandlerService {
     if (is_bot) {
       throw new Error('You are the bot! 🤖');
     }
+    if (session?.searching) {
+      return;
+    }
     const getUser = await this.prismaService.user.findUnique({
       where: {
         telegramId: id,
