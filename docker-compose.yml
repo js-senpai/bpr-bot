@@ -29,7 +29,7 @@ services:
       - "3002:3000"
     volumes:
       - ./logs:/usr/src/app/logs
-      - ./telegram-session.storage.json:/usr/src/app/telegram-session.storage.json
+      - telegram-session.storage.json:/usr/src/app/telegram-session.storage.json
       - ./parser:/usr/src/app/parser
     depends_on:
       - bpr-bot-db
