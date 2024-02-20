@@ -37,6 +37,7 @@ export class PuppeteerService {
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         timeout: 1000 * 60 * 3,
         puppeteerOptions: PUPPETEER_CONFIG,
+        monitor: false,
       });
     }
   }
