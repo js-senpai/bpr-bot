@@ -116,9 +116,6 @@ export class PuppeteerService {
       return await cluster.execute({ url: API_URL, choosenYear: year });
     } catch (e) {
       throw e;
-    } finally {
-      await cluster.idle();
-      await cluster.close();
     }
   }
 }
