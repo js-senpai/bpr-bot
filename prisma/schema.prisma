@@ -27,3 +27,42 @@ model invitations {
 
   @@index([invitatorId, userId])
 }
+
+model statistic_twenty_thousand_and_twenty_two {
+  id              String   @id @default(uuid())
+  provider_number Int
+  event_number    Int
+  cert_number     String   @unique
+  fullName        String
+  scores          Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([fullName, cert_number])
+}
+
+model statistic_twenty_thousand_and_twenty_three {
+  id              String   @id @default(uuid())
+  provider_number Int
+  event_number    Int
+  cert_number     String   @unique
+  fullName        String
+  scores          Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([fullName, cert_number])
+}
+
+model statistic_twenty_thousand_and_twenty_four {
+  id              String   @id @default(uuid())
+  provider_number Int
+  event_number    Int
+  cert_number     String   @unique
+  fullName        String
+  scores          Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([fullName, cert_number])
+}

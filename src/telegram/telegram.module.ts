@@ -8,11 +8,15 @@ import { TelegramRegistrationActionService } from './telegram-registration-actio
 import { PuppeteerService } from '../common/services/puppeteer.service';
 import { TelegramStatisticActionService } from './telegram-statistic-action/telegram-statistic-action.service';
 import { TelegramMailingActionService } from './telegram-mailing-action/telegram-mailing-action.service';
+import { TelegramDocumentHandlerService } from './telegram-document-handler/telegram-document-handler.service';
+import { TelegramUploadTableActionService } from './telegram-upload-table-action/telegram-upload-table-action.service';
+import { TelegramFileService } from '../common/services/telegram-file.service';
 
 @Module({
   providers: [
     Logger,
     PrismaService,
+    TelegramFileService,
     PuppeteerService,
     TelegramRegistrationActionService,
     TelegramStartHandlerService,
@@ -21,6 +25,8 @@ import { TelegramMailingActionService } from './telegram-mailing-action/telegram
     TelegramStatisticActionService,
     TelegramMailingActionService,
     TelegramUpdate,
+    TelegramDocumentHandlerService,
+    TelegramUploadTableActionService,
   ],
 })
 export class TelegramModule {}

@@ -5,9 +5,11 @@ import { Update } from 'telegraf/typings/core/types/typegram';
 export interface TelegramContext extends Scenes.SceneContext, Context {
   session: SceneSession<SceneSessionData> & {
     searching: boolean;
-    availableNames?: { name: string; scores: string }[];
+    availableNames?: { fullName: string; scores: string }[];
     enableMailing?: boolean;
     enableWritingMail?: boolean;
+    enableTableUploading?: boolean;
+    selectedTableYear?: number;
     steps: {
       passedPhoneRegistration: boolean;
       passedYearRegistration: boolean;
@@ -17,9 +19,9 @@ export interface TelegramContext extends Scenes.SceneContext, Context {
     };
     userInfo: {
       phoneNumber: string;
-      choosenFullName: string;
+      selectedFullName: string;
       invitatorId?: string;
-      choosenYear: number;
+      selectedYear: number;
     };
   };
   update: Update;

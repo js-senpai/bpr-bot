@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { TelegramRegistrationActionService } from '../telegram-registration-action/telegram-registration-action.service';
-import { ITelegramKeyboardBody } from '../../common/interfaces/telegram.interface';
+import { ITelegramBodyWithMessage } from '../../common/interfaces/telegram.interface';
 import { ChooseYearAction } from '../../common/components/telegram/actions/user/registration/choose-year.action';
 import { PrismaService } from '../../common/services/prisma.service';
 import { TelegramStatisticActionService } from '../telegram-statistic-action/telegram-statistic-action.service';
 import { TelegramMailingActionService } from '../telegram-mailing-action/telegram-mailing-action.service';
 import { EnableMailingAction } from '../../common/components/telegram/actions/admin/mailing/enable-mailing.action';
 import { DisableMailingAction } from '../../common/components/telegram/actions/admin/mailing/disable-mailing.action';
+import { TelegramUploadTableActionService } from '../telegram-upload-table-action/telegram-upload-table-action.service';
 
 @Injectable()
 export class TelegramKeyboardsHandlerService {
@@ -16,10 +17,11 @@ export class TelegramKeyboardsHandlerService {
     private readonly telegramRegistrationAction: TelegramRegistrationActionService,
     private readonly prismaService: PrismaService,
     private readonly telegramStatisticAction: TelegramStatisticActionService,
-    protected readonly telegramMailingAction: TelegramMailingActionService,
+    private readonly telegramMailingAction: TelegramMailingActionService,
+    private readonly telegramUploadTableAction: TelegramUploadTableActionService,
   ) {}
 
-  async actionHandler({ message, ctx }: ITelegramKeyboardBody) {
+  async actionHandler({ message, ctx }: ITelegramBodyWithMessage) {
     const {
       session,
       update: {
@@ -118,6 +120,9 @@ export class TelegramKeyboardsHandlerService {
           ctx,
           i18n: this.i18n,
         });
+      }
+      if (getKey === 'UPLOAD_TABLE') {
+        return await this.telegramUploadTableAction.enableUploadingTable(ctx);
       }
     }
   }

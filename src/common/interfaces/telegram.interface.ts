@@ -1,6 +1,6 @@
 import { TelegramContext } from '../contexts/telegram.context';
 
-export interface ITelegramKeyboardBody {
+export interface ITelegramBodyWithMessage {
   ctx: TelegramContext;
   message: string;
 }

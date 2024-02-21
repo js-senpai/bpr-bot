@@ -3,7 +3,7 @@ import { PrismaService } from '../../common/services/prisma.service';
 
 import { TelegramContext } from '../../common/contexts/telegram.context';
 import { I18nService } from 'nestjs-i18n';
-import { ITelegramKeyboardBody } from '../../common/interfaces/telegram.interface';
+import { ITelegramBodyWithMessage } from '../../common/interfaces/telegram.interface';
 import { validateNameSurname } from '../../common/utils/common.utils';
 import { ErrorFullNameAction } from '../../common/components/telegram/actions/errors/error-full-name.action';
 import { ChooseYearAction } from '../../common/components/telegram/actions/user/registration/choose-year.action';
@@ -19,7 +19,6 @@ import { GetFullNameAction } from '../../common/components/telegram/actions/user
 import { NotFoundResultsAction } from '../../common/components/telegram/actions/errors/not-found-results.action';
 import { GetScoreResultAction } from '../../common/components/telegram/actions/user/scores/get-score-result.action';
 import { ShareBotAction } from '../../common/components/telegram/actions/user/common/share-bot.action';
-import { ErrorSearchAction } from '../../common/components/telegram/actions/errors/error-search.action';
 
 @Injectable()
 export class TelegramRegistrationActionService {
@@ -51,7 +50,7 @@ export class TelegramRegistrationActionService {
     });
   }
 
-  async setYear({ message, ctx }: ITelegramKeyboardBody) {
+  async setYear({ message, ctx }: ITelegramBodyWithMessage) {
     const {
       session,
       update: {
@@ -72,7 +71,7 @@ export class TelegramRegistrationActionService {
       return;
     }
     session.steps.passedYearRegistration = true;
-    session.userInfo.choosenYear = +message;
+    session.userInfo.selectedYear = +message;
     await GetFullNameAction({
       ctx,
       i18n: this.i18n,
@@ -81,7 +80,7 @@ export class TelegramRegistrationActionService {
     return;
   }
 
-  async setFullName({ message, ctx }: ITelegramKeyboardBody) {
+  async setFullName({ message, ctx }: ITelegramBodyWithMessage) {
     const {
       session,
       update: {
@@ -107,18 +106,82 @@ export class TelegramRegistrationActionService {
       i18n: this.i18n,
     });
     let getFullNames = [];
-    try {
-      getFullNames = [
-        ...(await this.puppeteerService.getAvailableUsers({
-          fullName: message,
-          year: +session.userInfo.choosenYear,
-        })),
-      ];
-    } catch (e) {
-      return await ErrorSearchAction({
-        ctx,
-        i18n: this.i18n,
-      });
+    const [lastName, firstName] = message.split(' ');
+    if (+session?.userInfo?.selectedYear === 2024) {
+      getFullNames =
+        await this.prismaService.statistic_twenty_thousand_and_twenty_four.findMany(
+          {
+            where: {
+              OR: [
+                {
+                  fullName: {
+                    startsWith: message.toLowerCase(),
+                  },
+                },
+                {
+                  fullName: {
+                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                  },
+                },
+              ],
+            },
+            distinct: ['fullName'],
+            select: {
+              scores: true,
+              fullName: true,
+            },
+          },
+        );
+    } else if (+session?.userInfo?.selectedYear === 2023) {
+      getFullNames =
+        await this.prismaService.statistic_twenty_thousand_and_twenty_three.findMany(
+          {
+            where: {
+              OR: [
+                {
+                  fullName: {
+                    startsWith: message.toLowerCase(),
+                  },
+                },
+                {
+                  fullName: {
+                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                  },
+                },
+              ],
+            },
+            distinct: ['fullName'],
+            select: {
+              scores: true,
+              fullName: true,
+            },
+          },
+        );
+    } else if (+session?.userInfo?.selectedYear === 2022) {
+      getFullNames =
+        await this.prismaService.statistic_twenty_thousand_and_twenty_two.findMany(
+          {
+            where: {
+              OR: [
+                {
+                  fullName: {
+                    startsWith: message.toLowerCase(),
+                  },
+                },
+                {
+                  fullName: {
+                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                  },
+                },
+              ],
+            },
+            distinct: ['fullName'],
+            select: {
+              scores: true,
+              fullName: true,
+            },
+          },
+        );
     }
     await SearchingFinishedAction({
       ctx,
@@ -135,7 +198,9 @@ export class TelegramRegistrationActionService {
     return await ChooseFullNameAction({
       ctx,
       i18n: this.i18n,
-      fullNames: getFullNames.map(({ name }) => name),
+      fullNames: getFullNames.map(({ fullName }) =>
+        fullName.replaceAll(/(^|\s)\S/g, (char) => char.toUpperCase()),
+      ),
     });
   }
 
@@ -200,7 +265,7 @@ export class TelegramRegistrationActionService {
       });
     }
     const getScores = session.availableNames[nameIndex];
-    session.userInfo.choosenFullName = getScores.name;
+    session.userInfo.selectedFullName = getScores.fullName;
     return await GetScoreResultAction({
       ctx,
       i18n: this.i18n,

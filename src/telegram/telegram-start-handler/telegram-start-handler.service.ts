@@ -51,9 +51,9 @@ export class TelegramStartHandlerService {
     if (!session.userInfo) {
       session.userInfo = {
         invitatorId: '',
-        choosenYear: 0,
+        selectedYear: 0,
         phoneNumber: '',
-        choosenFullName: '',
+        selectedFullName: '',
       };
     }
     if (startPayload) {
@@ -97,7 +97,7 @@ export class TelegramStartHandlerService {
         isAdmin: getUser.isAdmin,
         i18n: this.i18n,
         ctx,
-        fullName: session.userInfo.choosenFullName,
+        fullName: session.userInfo.selectedFullName,
       });
     }
   }

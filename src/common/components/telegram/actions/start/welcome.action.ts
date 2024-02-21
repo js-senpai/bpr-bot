@@ -5,6 +5,7 @@ import { SendMailsKeyboardButton } from '../../buttons/keyboard-buttons/admin/ma
 import { GetTotalUsersKeyboardButton } from '../../buttons/keyboard-buttons/admin/statistic/get-total-users.keyboard-button';
 import { ShareBotKeyboardButton } from '../../buttons/keyboard-buttons/user/common/share-bot.keyboard-button';
 import { CancelMailsKeyboardButton } from '../../buttons/keyboard-buttons/admin/mailing/cancel-mails.keyboard-button';
+import { UploadTableKeyboardButton } from '../../buttons/keyboard-buttons/admin/files/upload-table.keyboard-button';
 
 export const WelcomeAction = async ({
   ctx,
@@ -44,6 +45,10 @@ export const WelcomeAction = async ({
           : [
               [
                 ...(await GetTotalUsersKeyboardButton({
+                  i18n,
+                  lang,
+                })),
+                ...(await UploadTableKeyboardButton({
                   i18n,
                   lang,
                 })),

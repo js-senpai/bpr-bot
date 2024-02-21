@@ -8,6 +8,8 @@
   "TOTAL_SCORES": "\uD83D\uDC69\u200D\uD83C\uDF93 Загальна кількість балів БПР за 2024 - <b>{scores}</b> \n(<a href=\"https://www.testcentr.org.ua/\">testcentr.org.ua</a>)",
   "ERROR_FULL_NAME": "\uD83D\uDEAB Ви ввели  некоректно ініціали.Приклад - <b>Павлюк Олена</b>",
   "ERROR_YEAR": "\uD83D\uDEAB Ви ввели некорректно рік. Приклад - <b>2024</b>",
+  "ERROR_CSV_UPLOAD": "Я очікую файл в форматі \"csv\"",
+  "ERROR_UNKNOWN": "Невідома помилка \uD83E\uDD72.Спробуйте перезагрузити бота через команду \"/start\"",
   "NOT_FOUND_RESULTS": "На жаль, у Вас поки що відсутні бали БПР за 2024 \uD83E\uDD37\u200D♀\uFE0F",
   "NOT_FOUND_USER": "Такого користувача не знайдено \uD83E\uDDD0",
   "ACCEPT_FULL_NAME": "Виберіть та підтвердіть ваше ФІО",
@@ -18,6 +20,10 @@
   "SENT_MAIL_SUCCESSFULLY": "Повідомлення успішно надіслані \uD83D\uDC4D",
   "CANCEL_MAIL": "Розсилка успішно скасована \uD83D\uDC4D",
   "ERROR_SEARCH": "Невідома помилка при пошуку \uD83E\uDD15. Сбробуйте ще раз",
+  "UPLOADING": "Завантажую...⏲\uFE0F",
+  "UPLOADED": "Файл успішно завантажено...✅",
+  "CHOOSE_TABLE_YEAR": "Виберіть рік \uD83D\uDCC5",
+  "UPLOAD_TABLE": "Завантажити таблицю в csv форматі \uD83D\uDC47",
   "BUTTONS": {
     "KEYBOARD_BUTTONS": {
       "SHARE_PHONE": "\uD83D\uDCF1 Поділитися контактом",
@@ -27,7 +33,8 @@
       "FIND": "\uD83D\uDD0E Шукати",
       "ANOTHER_REQUEST": "\uD83D\uDD0E Інший запит",
       "TRY_AGAIN": "\uD83D\uDD0E Спробувати ще раз",
-      "SHARE": "\uD83E\uDD1D Запросити колегу"
+      "SHARE": "\uD83E\uDD1D Запросити колегу",
+      "UPLOAD_TABLE": "\uD83D\uDCC1 Завантажити таблицю"
     },
     "INLINE_BUTTONS": {
       "SHARE": "\uD83E\uDD1D Вибрати юзера"

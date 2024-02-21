@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/services/prisma.service';
 import { I18nService } from 'nestjs-i18n';
-import { ITelegramKeyboardBody } from '../../common/interfaces/telegram.interface';
+import { ITelegramBodyWithMessage } from '../../common/interfaces/telegram.interface';
 import { SuccessfullyMailingAction } from '../../common/components/telegram/actions/admin/mailing/successfully-mailing.action';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class TelegramMailingActionService {
     private readonly i18n: I18nService,
   ) {}
 
-  async sendMessages({ message, ctx }: ITelegramKeyboardBody) {
+  async sendMessages({ message, ctx }: ITelegramBodyWithMessage) {
     const {
       session,
       update: {

@@ -39,3 +39,4 @@ lerna-debug.log*
 telegram-session.storage.json
 parser
 mysql.env
+tmp

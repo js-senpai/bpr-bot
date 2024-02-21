@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/services/prisma.service';
 import { TelegramContext } from '../../common/contexts/telegram.context';
-import { GetTotalUsersAction } from '../../common/components/telegram/actions/admin/statstic/get-total-users.action';
+import { GetTotalUsersAction } from '../../common/components/telegram/actions/admin/statistic/get-total-users.action';
 import { I18nService } from 'nestjs-i18n';
 
 @Injectable()

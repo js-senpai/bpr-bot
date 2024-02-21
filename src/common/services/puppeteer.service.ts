@@ -1,7 +1,5 @@
 import { addExtra } from 'puppeteer-extra';
 import { Injectable } from '@nestjs/common';
-import { Browser, DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } from 'puppeteer';
-import { API_URL } from '../constants/api.constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -63,9 +61,9 @@ export class PuppeteerService {
       puppeteerOptions: PUPPETEER_CONFIG,
       monitor: false,
     });
-    await cluster.task(async ({ page, data: { url, choosenYear } }) => {
+    await cluster.task(async ({ page, data: { url, selectedYear } }) => {
       const userAgent = new UserAgent();
-      const linkText = `Бали БПР ${choosenYear} року`;
+      const linkText = `Бали БПР ${selectedYear} року`;
       const linkItem = '.sppb-column-addons .sppb-addon-title a';
       const tableColumns = '.waffle  tbody tr';
       await page.setUserAgent(userAgent.toString());
@@ -109,7 +107,7 @@ export class PuppeteerService {
             return a;
           }, []);
         },
-        [fullName, choosenYear],
+        [fullName, selectedYear],
       );
 
       return [
@@ -117,12 +115,9 @@ export class PuppeteerService {
       ];
     });
     try {
-      return await cluster.execute({ url: API_URL, choosenYear: year });
+      return await cluster.execute({ url: '', selectedYear: year });
     } catch (e) {
       throw e;
-    } finally {
-      // await cluster.idle();
-      // await cluster.close();
     }
   }
 }
