@@ -15,7 +15,7 @@
   "SHARE_BOT_TEXT": "Тут ви можете дізнатися актуальні бали з БПР.",
   "TOTAL_USERS": "\uD83E\uDDD1\u200D\uD83D\uDCBB\uD83D\uDC69\u200D\uD83D\uDCBB Всього користувачів: <b>{total}</b>",
   "WRITE_MAIL_MESSAGE": "Введіть текст розсилки нижче \uD83D\uDC47",
-  "SENT_MAIL_SUCCESSFULLY": "Повідомлення успішно надіслани \uD83D\uDC4D",
+  "SENT_MAIL_SUCCESSFULLY": "Повідомлення успішно надіслані \uD83D\uDC4D",
   "CANCEL_MAIL": "Розсилка успішно скасована \uD83D\uDC4D",
   "ERROR_SEARCH": "Невідома помилка при пошуку \uD83E\uDD15. Сбробуйте ще раз",
   "BUTTONS": {

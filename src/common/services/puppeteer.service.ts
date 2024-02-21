@@ -68,8 +68,7 @@ export class PuppeteerService {
       const linkText = `Бали БПР ${choosenYear} року`;
       const linkItem = '.sppb-column-addons .sppb-addon-title a';
       const tableColumns = '.waffle  tbody tr';
-      // await page.setUserAgent(userAgent.toString());
-      await page.setJavaScriptEnabled(false);
+      await page.setUserAgent(userAgent.toString());
       await page.goto(url);
       const link = await page.$$eval(
         linkItem,
@@ -84,7 +83,7 @@ export class PuppeteerService {
         },
         linkText,
       );
-      // await page.setUserAgent(userAgent.toString());
+      await page.setUserAgent(userAgent.toString());
       await page.goto(link);
       const fullNameList = await page.$$eval(
         tableColumns,
@@ -122,8 +121,8 @@ export class PuppeteerService {
     } catch (e) {
       throw e;
     } finally {
-      await cluster.idle();
-      await cluster.close();
+      // await cluster.idle();
+      // await cluster.close();
     }
   }
 }
