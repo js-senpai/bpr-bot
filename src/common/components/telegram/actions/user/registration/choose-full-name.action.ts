@@ -22,14 +22,16 @@ export const ChooseFullNameAction = async ({
       reply_markup: {
         resize_keyboard: true,
         inline_keyboard: [
-          fullNames.map((name, index) => {
-            return {
-              text: name,
-              callback_data: JSON.stringify({
-                type: TelegramActionsEnums.CHOOSE_FULL_NAME,
-                value: index,
-              }),
-            };
+          ...fullNames.map((name, index) => {
+            return [
+              {
+                text: name,
+                callback_data: JSON.stringify({
+                  type: TelegramActionsEnums.CHOOSE_FULL_NAME,
+                  value: index,
+                }),
+              },
+            ];
           }),
         ],
       },

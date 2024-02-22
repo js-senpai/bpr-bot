@@ -10,7 +10,6 @@ import { ChooseYearAction } from '../../common/components/telegram/actions/user/
 import { PuppeteerService } from '../../common/services/puppeteer.service';
 import { SearchingAction } from '../../common/components/telegram/actions/common/searching.action';
 import { ConfigService } from '@nestjs/config';
-import { SearchingFinishedAction } from '../../common/components/telegram/actions/common/searching-finished.action';
 import { NotFoundUserAction } from '../../common/components/telegram/actions/errors/not-found-user.action';
 import { ChooseFullNameAction } from '../../common/components/telegram/actions/user/registration/choose-full-name.action';
 import { AVAILABLE_YEARS } from '../../common/constants/common.constants';
@@ -183,10 +182,10 @@ export class TelegramRegistrationActionService {
           },
         );
     }
-    await SearchingFinishedAction({
-      ctx,
-      i18n: this.i18n,
-    });
+    // await SearchingFinishedAction({
+    //   ctx,
+    //   i18n: this.i18n,
+    // });
     session.searching = false;
     if (!getFullNames.length) {
       return await NotFoundUserAction({
