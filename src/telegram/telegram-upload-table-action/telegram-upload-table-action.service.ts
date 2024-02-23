@@ -190,6 +190,7 @@ export class TelegramUploadTableActionService {
       ctx,
       i18n: this.i18n,
     });
+    session.enableTableUploading = false;
     session.searching = false;
     return;
   }
