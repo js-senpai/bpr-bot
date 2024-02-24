@@ -5,7 +5,7 @@
   "AGREEMENT": "Натискаючи цю кнопку Ви надаєте згоду на обробку персональних даних ✅",
   "CHOOSE_YEAR": "Оберіть рік \uD83D\uDCC5",
   "WRITE_FULL_NAME": "Введіть свої ініціали за шаблоном - <b>Павлюк Олена</b>",
-  "TOTAL_SCORES": "\uD83D\uDC69\u200D\uD83C\uDF93 Загальна кількість балів БПР за 2024 - <b>{scores}</b> \n(<a href=\"https://www.testcentr.org.ua/\">testcentr.org.ua</a>)",
+  "TOTAL_SCORES": "\uD83D\uDC69\u200D\uD83C\uDF93 Загальна кількість балів БПР за {year} - <b>{scores}</b> \n(<a href=\"https://www.testcentr.org.ua/\">testcentr.org.ua</a>)",
   "ERROR_FULL_NAME": "\uD83D\uDEAB Ви ввели  некоректно ініціали.Приклад - <b>Павлюк Олена</b>",
   "ERROR_YEAR": "\uD83D\uDEAB Ви ввели некорректно рік. Приклад - <b>2024</b>",
   "ERROR_CSV_UPLOAD": "Я очікую файл в форматі \"csv\"",

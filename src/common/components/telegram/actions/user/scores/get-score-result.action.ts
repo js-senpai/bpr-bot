@@ -8,17 +8,20 @@ export const GetScoreResultAction = async ({
   lang = 'ua',
   i18n,
   scores,
+  year = 2024,
 }: {
   ctx: TelegramContext;
   lang?: string;
   i18n: I18nService;
   scores: string;
+  year: number;
 }): Promise<void> => {
   await ctx.reply(
     await i18n.translate('telegram.TOTAL_SCORES', {
       lang,
       args: {
         scores,
+        year,
       },
     }),
     {

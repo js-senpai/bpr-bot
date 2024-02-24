@@ -269,6 +269,7 @@ export class TelegramRegistrationActionService {
       ctx,
       i18n: this.i18n,
       scores: getScores.scores,
+      year: +session.userInfo.selectedYear,
     });
   }
 
