@@ -111,7 +111,7 @@ export class TelegramUploadTableActionService {
         i18n: this.i18n,
       });
     }
-    if (file_size > 10 * 1024 * 1024) {
+    if (file_size > 20 * 1024 * 1024) {
       session.enableTableUploading = false;
       return await ErrorFileSizeAction({
         ctx,
