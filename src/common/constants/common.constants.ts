@@ -1,1 +1,1 @@
-export const AVAILABLE_YEARS = [2024, 2023, 2022];
+export const AVAILABLE_YEARS = [2024, 2023];
