@@ -44,7 +44,6 @@ export class TelegramUpdate {
         JSON.stringify(e?.response?.data || e.stack),
         TelegramUpdate.name,
       );
-      throw e;
     }
   }
 
@@ -66,7 +65,6 @@ export class TelegramUpdate {
         JSON.stringify(e?.response?.data || e.stack),
         TelegramUpdate.name,
       );
-      throw e;
     }
   }
 
@@ -84,7 +82,6 @@ export class TelegramUpdate {
         i18n: this.i18n,
       });
       this.logger.error('Error in contactQuery', e.stack, TelegramUpdate.name);
-      throw e;
     }
   }
 
@@ -109,7 +106,6 @@ export class TelegramUpdate {
         JSON.stringify(e?.response?.data || e.stack),
         TelegramUpdate.name,
       );
-      throw e;
     }
   }
 
@@ -137,7 +133,6 @@ export class TelegramUpdate {
         JSON.stringify(e?.response?.data || e.stack),
         TelegramUpdate.name,
       );
-      throw e;
     }
   }
 }
