@@ -10,6 +10,7 @@ import { EnableUploadingTableAction } from '../../common/components/telegram/act
 import { SelectYearTableAction } from '../../common/components/telegram/actions/admin/files/select-year-table.action';
 import { UploadingAction } from '../../common/components/telegram/actions/common/uploading.action';
 import { UploadedAction } from '../../common/components/telegram/actions/common/uploading-finished.action';
+import { ErrorFileSizeAction } from '../../common/components/telegram/actions/errors/error-file-size.action';
 @Injectable()
 export class TelegramUploadTableActionService {
   constructor(
@@ -90,7 +91,7 @@ export class TelegramUploadTableActionService {
         // @ts-ignore
         message: {
           from: { id },
-          document: { mime_type, file_id },
+          document: { mime_type, file_id, file_size },
         },
       },
     } = ctx;
@@ -106,6 +107,13 @@ export class TelegramUploadTableActionService {
     if (mime_type !== 'text/csv') {
       session.enableTableUploading = false;
       return await ErrorCsvUploadAction({
+        ctx,
+        i18n: this.i18n,
+      });
+    }
+    if (file_size > 10 * 1024 * 1024) {
+      session.enableTableUploading = false;
+      return await ErrorFileSizeAction({
         ctx,
         i18n: this.i18n,
       });
