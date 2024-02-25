@@ -21,7 +21,7 @@ export class TelegramStartHandlerService {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         message: {
-          from: { id, is_bot = false },
+          from: { id, is_bot = false, first_name = '', last_name = '' },
         },
       },
       startPayload,
@@ -97,7 +97,7 @@ export class TelegramStartHandlerService {
         isAdmin: getUser.isAdmin,
         i18n: this.i18n,
         ctx,
-        fullName: session.userInfo.selectedFullName,
+        fullName: `${first_name} ${last_name}`,
       });
     }
   }
