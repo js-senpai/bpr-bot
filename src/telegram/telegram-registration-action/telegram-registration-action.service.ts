@@ -104,10 +104,10 @@ export class TelegramRegistrationActionService {
       ctx,
       i18n: this.i18n,
     });
-    let getFullNames;
+    const getFullNames = [];
     const [lastName, firstName] = message.split(' ');
     if (+session?.userInfo?.selectedYear === 2024) {
-      getFullNames =
+      getFullNames.push(
         await this.prismaService.statistic_twenty_thousand_and_twenty_four.groupBy(
           {
             by: ['fullName'],
@@ -129,9 +129,10 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        );
+        ),
+      );
     } else if (+session?.userInfo?.selectedYear === 2023) {
-      getFullNames =
+      getFullNames.push(
         await this.prismaService.statistic_twenty_thousand_and_twenty_three.groupBy(
           {
             by: ['fullName'],
@@ -153,9 +154,10 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        );
+        ),
+      );
     } else if (+session?.userInfo?.selectedYear === 2022) {
-      getFullNames =
+      getFullNames.push(
         await this.prismaService.statistic_twenty_thousand_and_twenty_two.groupBy(
           {
             by: ['fullName'],
@@ -177,15 +179,15 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        );
+        ),
+      );
     }
     // await SearchingFinishedAction({
     //   ctx,
     //   i18n: this.i18n,
     // });
     session.searching = false;
-    console.log(getFullNames);
-    if (!getFullNames) {
+    if (!getFullNames.length) {
       return await NotFoundUserAction({
         ctx,
         i18n: this.i18n,
