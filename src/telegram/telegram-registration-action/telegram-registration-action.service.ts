@@ -104,12 +104,13 @@ export class TelegramRegistrationActionService {
       ctx,
       i18n: this.i18n,
     });
-    let getFullNames = [];
+    let getFullNames;
     const [lastName, firstName] = message.split(' ');
     if (+session?.userInfo?.selectedYear === 2024) {
       getFullNames =
-        await this.prismaService.statistic_twenty_thousand_and_twenty_four.findMany(
+        await this.prismaService.statistic_twenty_thousand_and_twenty_four.groupBy(
           {
+            by: ['fullName'],
             where: {
               OR: [
                 {
@@ -124,17 +125,16 @@ export class TelegramRegistrationActionService {
                 },
               ],
             },
-            distinct: ['fullName'],
-            select: {
+            _sum: {
               scores: true,
-              fullName: true,
             },
           },
         );
     } else if (+session?.userInfo?.selectedYear === 2023) {
       getFullNames =
-        await this.prismaService.statistic_twenty_thousand_and_twenty_three.findMany(
+        await this.prismaService.statistic_twenty_thousand_and_twenty_three.groupBy(
           {
+            by: ['fullName'],
             where: {
               OR: [
                 {
@@ -149,17 +149,16 @@ export class TelegramRegistrationActionService {
                 },
               ],
             },
-            distinct: ['fullName'],
-            select: {
+            _sum: {
               scores: true,
-              fullName: true,
             },
           },
         );
     } else if (+session?.userInfo?.selectedYear === 2022) {
       getFullNames =
-        await this.prismaService.statistic_twenty_thousand_and_twenty_two.findMany(
+        await this.prismaService.statistic_twenty_thousand_and_twenty_two.groupBy(
           {
+            by: ['fullName'],
             where: {
               OR: [
                 {
@@ -174,10 +173,8 @@ export class TelegramRegistrationActionService {
                 },
               ],
             },
-            distinct: ['fullName'],
-            select: {
+            _sum: {
               scores: true,
-              fullName: true,
             },
           },
         );
@@ -187,7 +184,8 @@ export class TelegramRegistrationActionService {
     //   i18n: this.i18n,
     // });
     session.searching = false;
-    if (!getFullNames.length) {
+    console.log(getFullNames);
+    if (!getFullNames) {
       return await NotFoundUserAction({
         ctx,
         i18n: this.i18n,
@@ -198,7 +196,7 @@ export class TelegramRegistrationActionService {
       ctx,
       i18n: this.i18n,
       fullNames: getFullNames.map(({ fullName }) =>
-        fullName.replaceAll(/(^|\s)\S/g, (char) => char.toUpperCase()),
+        fullName.replace(/(^|\s)\S/g, (char) => char.toUpperCase()),
       ),
     });
   }
@@ -268,7 +266,7 @@ export class TelegramRegistrationActionService {
     return await GetScoreResultAction({
       ctx,
       i18n: this.i18n,
-      scores: getScores.scores,
+      scores: getScores._sum.scores,
       year: +session.userInfo.selectedYear,
     });
   }
