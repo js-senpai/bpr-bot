@@ -108,7 +108,7 @@ export class TelegramRegistrationActionService {
     const [lastName, firstName] = message.split(' ');
     if (+session?.userInfo?.selectedYear === 2024) {
       getFullNames.push(
-        await this.prismaService.statistic_twenty_thousand_and_twenty_four.groupBy(
+        ...(await this.prismaService.statistic_twenty_thousand_and_twenty_four.groupBy(
           {
             by: ['fullName'],
             where: {
@@ -129,11 +129,11 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        ),
+        )),
       );
     } else if (+session?.userInfo?.selectedYear === 2023) {
       getFullNames.push(
-        await this.prismaService.statistic_twenty_thousand_and_twenty_three.groupBy(
+        ...(await this.prismaService.statistic_twenty_thousand_and_twenty_three.groupBy(
           {
             by: ['fullName'],
             where: {
@@ -154,11 +154,11 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        ),
+        )),
       );
     } else if (+session?.userInfo?.selectedYear === 2022) {
       getFullNames.push(
-        await this.prismaService.statistic_twenty_thousand_and_twenty_two.groupBy(
+        ...(await this.prismaService.statistic_twenty_thousand_and_twenty_two.groupBy(
           {
             by: ['fullName'],
             where: {
@@ -179,7 +179,7 @@ export class TelegramRegistrationActionService {
               scores: true,
             },
           },
-        ),
+        )),
       );
     }
     // await SearchingFinishedAction({
@@ -194,6 +194,7 @@ export class TelegramRegistrationActionService {
       });
     }
     session.availableNames = getFullNames;
+    console.log(getFullNames);
     return await ChooseFullNameAction({
       ctx,
       i18n: this.i18n,
