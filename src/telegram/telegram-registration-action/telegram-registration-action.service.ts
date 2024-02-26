@@ -194,7 +194,6 @@ export class TelegramRegistrationActionService {
       });
     }
     session.availableNames = getFullNames;
-    console.log(getFullNames);
     return await ChooseFullNameAction({
       ctx,
       i18n: this.i18n,
