@@ -22,6 +22,7 @@ import { IDetailedTableData } from './telegram-registration-action.interface';
 import * as dayjs from 'dayjs';
 import { GetDetailedInfoAction } from '../../common/components/telegram/actions/user/scores/get-detailed-info.action';
 import { ErrorUnknownAction } from '../../common/components/telegram/actions/errors/error-unknown.action';
+import { ErrorNotFoundDetailedAction } from '../../common/components/telegram/actions/errors/error-not-found-detailed.action';
 
 @Injectable()
 export class TelegramRegistrationActionService {
@@ -347,7 +348,7 @@ export class TelegramRegistrationActionService {
         .join('\n\n');
     }
     if (!text) {
-      return await ErrorUnknownAction({
+      return await ErrorNotFoundDetailedAction({
         ctx,
         i18n: this.i18n,
       });
