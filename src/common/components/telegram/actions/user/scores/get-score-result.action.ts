@@ -31,14 +31,14 @@ export const GetScoreResultAction = async ({
       parse_mode: 'HTML',
       reply_markup: {
         resize_keyboard: true,
-        // keyboard: [
-        //   await AnotherRequestKeyboardButton({
-        //     i18n,
-        //   }),
-        //   await ShareBotKeyboardButton({
-        //     i18n,
-        //   }),
-        // ],
+        keyboard: [
+          await AnotherRequestKeyboardButton({
+            i18n,
+          }),
+          await ShareBotKeyboardButton({
+            i18n,
+          }),
+        ],
         inline_keyboard: [
           await DetailedInlineButton({
             lang,
