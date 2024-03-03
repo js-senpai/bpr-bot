@@ -29,7 +29,6 @@ export class TelegramRegistrationActionService {
     private readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
     private readonly i18n: I18nService,
-    private readonly puppeteerService: PuppeteerService,
   ) {}
 
   async setContact(ctx: TelegramContext) {
@@ -353,7 +352,6 @@ export class TelegramRegistrationActionService {
         i18n: this.i18n,
       });
     }
-    console.log(text);
     return await GetDetailedInfoAction({
       ctx,
       chatId: chat.id,
