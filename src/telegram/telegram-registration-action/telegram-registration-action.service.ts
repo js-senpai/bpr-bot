@@ -18,6 +18,10 @@ import { GetFullNameAction } from '../../common/components/telegram/actions/user
 import { NotFoundResultsAction } from '../../common/components/telegram/actions/errors/not-found-results.action';
 import { GetScoreResultAction } from '../../common/components/telegram/actions/user/scores/get-score-result.action';
 import { ShareBotAction } from '../../common/components/telegram/actions/user/common/share-bot.action';
+import { IDetailedTableData } from './telegram-registration-action.interface';
+import * as dayjs from 'dayjs';
+import { GetDetailedInfoAction } from '../../common/components/telegram/actions/user/scores/get-detailed-info.action';
+import { ErrorUnknownAction } from '../../common/components/telegram/actions/errors/error-unknown.action';
 
 @Injectable()
 export class TelegramRegistrationActionService {
@@ -270,6 +274,89 @@ export class TelegramRegistrationActionService {
       i18n: this.i18n,
       scores: getScores._sum.scores,
       year: +session.userInfo.selectedYear,
+      nameIndex,
+    });
+  }
+
+  async getDetailedInfo({
+    ctx,
+    nameIndex,
+  }: {
+    ctx: TelegramContext;
+    nameIndex: string;
+  }) {
+    const {
+      session,
+      update: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        callback_query: {
+          from: { id },
+          message: { message_id, chat },
+        },
+      },
+    } = ctx;
+    const getUser = await this.prismaService.user.findFirst({
+      where: {
+        telegramId: id,
+        isAdmin: false,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!getUser) {
+      return;
+    }
+    const getScores = session.availableNames[nameIndex];
+    let text = 'Unknown';
+    if (session.selectedTableYear === 2024) {
+      const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
+        SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
+        FROM statistic_info_twenty_thousand_and_twenty_four AS info
+        INNER JOIN statistic_twenty_thousand_and_twenty_four AS stat
+        ON info.event_number = stat.event_number
+        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
+        ORDER BY info."dateStart" DESC;
+    `;
+      text = result
+        .map(
+          ({ scores, cert_number, theme, dateStart }) =>
+            `${dayjs(dateStart).format(
+              'DD.MM.YYYY',
+            )} - ${theme}\n${cert_number} - <b>${scores}</b>`,
+        )
+        .join('\n\n');
+    } else if (session.selectedTableYear === 2023) {
+      const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
+        SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
+        FROM statistic_info_twenty_thousand_and_twenty_three AS info
+        INNER JOIN statistic_twenty_thousand_and_twenty_three AS stat
+        ON info.event_number = stat.event_number
+        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
+        ORDER BY info."dateStart" DESC;
+    `;
+      text = result
+        .map(
+          ({ scores, cert_number, theme, dateStart }) =>
+            `${dayjs(dateStart).format(
+              'DD.MM.YYYY',
+            )} - ${theme}\n${cert_number} - <b>${scores}</b>`,
+        )
+        .join('\n\n');
+    }
+    if (!text) {
+      return await ErrorUnknownAction({
+        ctx,
+        i18n: this.i18n,
+      });
+    }
+    console.log(text);
+    return await GetDetailedInfoAction({
+      ctx,
+      chatId: chat.id,
+      messageId: message_id,
+      text,
     });
   }
 

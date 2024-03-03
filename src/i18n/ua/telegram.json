@@ -25,6 +25,7 @@
   "UPLOADED": "Файл успішно завантажено...✅",
   "CHOOSE_TABLE_YEAR": "Виберіть рік \uD83D\uDCC5",
   "UPLOAD_TABLE": "Завантажити таблицю в csv форматі \uD83D\uDC47",
+  "MENU": "Меню \uD83D\uDCD6",
   "BUTTONS": {
     "KEYBOARD_BUTTONS": {
       "SHARE_PHONE": "\uD83D\uDCF1 Поділитися контактом",
@@ -35,10 +36,12 @@
       "ANOTHER_REQUEST": "\uD83D\uDD0E Інший запит",
       "TRY_AGAIN": "\uD83D\uDD0E Спробувати ще раз",
       "SHARE": "\uD83E\uDD1D Запросити колегу",
-      "UPLOAD_TABLE": "\uD83D\uDCC1 Завантажити таблицю"
+      "UPLOAD_TABLE": "\uD83D\uDCC1 Завантажити таблицю",
+      "UPLOAD_INFO_TABLE": "\uD83D\uDCC1 Завантажити таблицю заходів"
     },
     "INLINE_BUTTONS": {
-      "SHARE": "\uD83E\uDD1D Вибрати юзера"
+      "SHARE": "\uD83E\uDD1D Вибрати юзера",
+      "DETAILED": "\uD83D\uDD0E Детально"
     }
   }
 }

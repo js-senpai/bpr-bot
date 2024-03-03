@@ -66,3 +66,55 @@ model statistic_twenty_thousand_and_twenty_four {
 
   @@index([fullName, cert_number])
 }
+
+model statistic_info_twenty_thousand_and_twenty_three {
+  id                      String   @id @default(uuid())
+  provider_number         Int
+  event_number            Int      @unique
+  theme                   String
+  type                    String
+  formType                String
+  status                  String
+  scores                  String
+  dateStart               DateTime
+  dateEnd                 DateTime
+  profession              String
+  provisorProfession      String?
+  juniorProfession        String?
+  seniorProfession        String?
+  regLink                 String
+  providerLink            String
+  providerMaintainer      String
+  providerMaintainerPhone String?
+  location                String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([event_number])
+}
+
+model statistic_info_twenty_thousand_and_twenty_four {
+  id                      String   @id @default(uuid())
+  provider_number         Int
+  event_number            Int      @unique
+  theme                   String
+  type                    String
+  formType                String
+  status                  String
+  scores                  String
+  dateStart               DateTime
+  dateEnd                 DateTime
+  profession              String
+  provisorProfession      String?
+  juniorProfession        String?
+  seniorProfession        String?
+  regLink                 String
+  providerLink            String
+  providerMaintainer      String
+  providerMaintainerPhone String?
+  location                String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([event_number])
+}

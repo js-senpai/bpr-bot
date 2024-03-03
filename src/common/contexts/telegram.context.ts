@@ -9,6 +9,7 @@ export interface TelegramContext extends Scenes.SceneContext, Context {
     enableMailing?: boolean;
     enableWritingMail?: boolean;
     enableTableUploading?: boolean;
+    enableTableInfoUploading?: boolean;
     selectedTableYear?: number;
     steps: {
       passedPhoneRegistration: boolean;

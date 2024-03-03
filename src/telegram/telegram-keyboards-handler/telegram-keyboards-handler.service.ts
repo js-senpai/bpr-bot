@@ -7,8 +7,9 @@ import { PrismaService } from '../../common/services/prisma.service';
 import { TelegramStatisticActionService } from '../telegram-statistic-action/telegram-statistic-action.service';
 import { TelegramMailingActionService } from '../telegram-mailing-action/telegram-mailing-action.service';
 import { EnableMailingAction } from '../../common/components/telegram/actions/admin/mailing/enable-mailing.action';
-import { DisableMailingAction } from '../../common/components/telegram/actions/admin/mailing/disable-mailing.action';
 import { TelegramUploadTableActionService } from '../telegram-upload-table-action/telegram-upload-table-action.service';
+import { MenuAction } from '../../common/components/telegram/actions/common/menu.action';
+import { TelegramUploadTableInfoActionService } from '../telegram-upload-table-info-action/telegram-upload-table-info-action.service';
 
 @Injectable()
 export class TelegramKeyboardsHandlerService {
@@ -19,6 +20,7 @@ export class TelegramKeyboardsHandlerService {
     private readonly telegramStatisticAction: TelegramStatisticActionService,
     private readonly telegramMailingAction: TelegramMailingActionService,
     private readonly telegramUploadTableAction: TelegramUploadTableActionService,
+    private readonly telegramUploadTableInfoAction: TelegramUploadTableInfoActionService,
   ) {}
 
   async actionHandler({ message, ctx }: ITelegramBodyWithMessage) {
@@ -70,7 +72,18 @@ export class TelegramKeyboardsHandlerService {
         });
       }
     } else {
-      if (session?.enableWritingMail && getKey !== 'CANCEL') {
+      if (getKey === 'CANCEL') {
+        session.enableMailing = false;
+        session.enableWritingMail = false;
+        session.enableTableUploading = false;
+        session.enableTableInfoUploading = false;
+        return await MenuAction({
+          ctx,
+          i18n: this.i18n,
+          isAdmin: !!checkAdmin,
+        });
+      }
+      if (session?.enableWritingMail) {
         return await this.telegramMailingAction.sendMessages({
           message,
           ctx,
@@ -113,16 +126,13 @@ export class TelegramKeyboardsHandlerService {
         session.enableWritingMail = true;
         return;
       }
-      if (getKey === 'CANCEL') {
-        session.enableMailing = false;
-        session.enableWritingMail = false;
-        return await DisableMailingAction({
-          ctx,
-          i18n: this.i18n,
-        });
-      }
       if (getKey === 'UPLOAD_TABLE') {
         return await this.telegramUploadTableAction.enableUploadingTable(ctx);
+      }
+      if (getKey === 'UPLOAD_INFO_TABLE') {
+        return await this.telegramUploadTableInfoAction.enableUploadingTable(
+          ctx,
+        );
       }
     }
   }

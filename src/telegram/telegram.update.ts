@@ -35,6 +35,7 @@ export class TelegramUpdate {
       ctx.session.enableTableUploading = false;
       ctx.session.enableWritingMail = false;
       ctx.session.enableMailing = false;
+      ctx.session.enableTableInfoUploading = false;
       ErrorUnknownAction({
         ctx,
         i18n: this.i18n,
@@ -56,6 +57,7 @@ export class TelegramUpdate {
       ctx.session.enableTableUploading = false;
       ctx.session.enableWritingMail = false;
       ctx.session.enableMailing = false;
+      ctx.session.enableTableInfoUploading = false;
       ErrorUnknownAction({
         ctx,
         i18n: this.i18n,
@@ -77,6 +79,7 @@ export class TelegramUpdate {
       ctx.session.enableTableUploading = false;
       ctx.session.enableWritingMail = false;
       ctx.session.enableMailing = false;
+      ctx.session.enableTableInfoUploading = false;
       ErrorUnknownAction({
         ctx,
         i18n: this.i18n,
@@ -97,6 +100,7 @@ export class TelegramUpdate {
       ctx.session.enableTableUploading = false;
       ctx.session.enableWritingMail = false;
       ctx.session.enableMailing = false;
+      ctx.session.enableTableInfoUploading = false;
       ErrorUnknownAction({
         ctx,
         i18n: this.i18n,
@@ -124,6 +128,7 @@ export class TelegramUpdate {
       ctx.session.enableTableUploading = false;
       ctx.session.enableWritingMail = false;
       ctx.session.enableMailing = false;
+      ctx.session.enableTableInfoUploading = false;
       ErrorUnknownAction({
         ctx,
         i18n: this.i18n,

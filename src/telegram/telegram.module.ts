@@ -11,6 +11,7 @@ import { TelegramMailingActionService } from './telegram-mailing-action/telegram
 import { TelegramDocumentHandlerService } from './telegram-document-handler/telegram-document-handler.service';
 import { TelegramUploadTableActionService } from './telegram-upload-table-action/telegram-upload-table-action.service';
 import { TelegramFileService } from '../common/services/telegram-file.service';
+import { TelegramUploadTableInfoActionService } from './telegram-upload-table-info-action/telegram-upload-table-info-action.service';
 
 @Module({
   providers: [
@@ -27,6 +28,7 @@ import { TelegramFileService } from '../common/services/telegram-file.service';
     TelegramUpdate,
     TelegramDocumentHandlerService,
     TelegramUploadTableActionService,
+    TelegramUploadTableInfoActionService,
   ],
 })
 export class TelegramModule {}

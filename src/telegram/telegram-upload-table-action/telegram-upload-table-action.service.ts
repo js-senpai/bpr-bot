@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/services/prisma.service';
 import { TelegramFileService } from '../../common/services/telegram-file.service';
-import { ConfigService } from '@nestjs/config';
 import { TelegramContext } from '../../common/contexts/telegram.context';
 import { ErrorCsvUploadAction } from '../../common/components/telegram/actions/errors/error-csv-upload.action';
 import { I18nService } from 'nestjs-i18n';
 import * as csv from 'csvtojson';
-import { EnableUploadingTableAction } from '../../common/components/telegram/actions/admin/files/enable-uploading-table.action';
-import { SelectYearTableAction } from '../../common/components/telegram/actions/admin/files/select-year-table.action';
+import { EnableUploadingTableAction } from '../../common/components/telegram/actions/admin/table/enable-uploading-table.action';
+import { SelectYearTableAction } from '../../common/components/telegram/actions/admin/table/select-year-table.action';
 import { UploadingAction } from '../../common/components/telegram/actions/common/uploading.action';
 import { UploadedAction } from '../../common/components/telegram/actions/common/uploading-finished.action';
 import { ErrorFileSizeAction } from '../../common/components/telegram/actions/errors/error-file-size.action';
@@ -16,7 +15,6 @@ export class TelegramUploadTableActionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly telegramFileService: TelegramFileService,
-    private readonly configService: ConfigService,
     private readonly i18n: I18nService,
   ) {}
 

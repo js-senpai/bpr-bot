@@ -1,7 +1,7 @@
 import { I18nService } from 'nestjs-i18n';
 import { TelegramContext } from '../../../../../contexts/telegram.context';
 import { GetTotalUsersKeyboardButton } from '../../../buttons/keyboard-buttons/admin/statistic/get-total-users.keyboard-button';
-import { CancelMailsKeyboardButton } from '../../../buttons/keyboard-buttons/admin/mailing/cancel-mails.keyboard-button';
+import { CancelKeyboardButton } from '../../../buttons/keyboard-buttons/admin/common/cancel.keyboard-button';
 
 export const EnableMailingAction = async ({
   ctx,
@@ -26,7 +26,7 @@ export const EnableMailingAction = async ({
               i18n,
               lang,
             })),
-            ...(await CancelMailsKeyboardButton({
+            ...(await CancelKeyboardButton({
               lang,
               i18n,
             })),

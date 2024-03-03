@@ -4,28 +4,24 @@ import { AnotherRequestKeyboardButton } from '../../buttons/keyboard-buttons/use
 import { SendMailsKeyboardButton } from '../../buttons/keyboard-buttons/admin/mailing/send-mails.keyboard-button';
 import { GetTotalUsersKeyboardButton } from '../../buttons/keyboard-buttons/admin/statistic/get-total-users.keyboard-button';
 import { ShareBotKeyboardButton } from '../../buttons/keyboard-buttons/user/common/share-bot.keyboard-button';
+import { CancelKeyboardButton } from '../../buttons/keyboard-buttons/admin/common/cancel.keyboard-button';
 import { UploadTableKeyboardButton } from '../../buttons/keyboard-buttons/admin/table/upload-table.keyboard-button';
 import { UploadTableInfoKeyboardButton } from '../../buttons/keyboard-buttons/admin/table-info/upload-table-info.keyboard-action';
 
-export const WelcomeAction = async ({
+export const MenuAction = async ({
   ctx,
   lang = 'ua',
   i18n,
   isAdmin = false,
-  fullName,
 }: {
   ctx: TelegramContext;
   lang?: string;
   i18n: I18nService;
   isAdmin: boolean;
-  fullName: string;
 }): Promise<void> => {
   await ctx.reply(
-    await i18n.translate('telegram.WELCOME', {
+    await i18n.translate('telegram.MENU', {
       lang,
-      args: {
-        fullName,
-      },
     }),
     {
       parse_mode: 'HTML',

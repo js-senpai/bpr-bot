@@ -3,6 +3,7 @@ import { PrismaService } from '../../common/services/prisma.service';
 import { I18nService } from 'nestjs-i18n';
 import { ITelegramBodyWithMessage } from '../../common/interfaces/telegram.interface';
 import { SuccessfullyMailingAction } from '../../common/components/telegram/actions/admin/mailing/successfully-mailing.action';
+import { delay } from '../../common/utils/common.utils';
 
 @Injectable()
 export class TelegramMailingActionService {
@@ -41,6 +42,7 @@ export class TelegramMailingActionService {
     });
     session.enableWritingMail = false;
     for (const { telegramId } of getUsers) {
+      await delay(1000);
       await ctx.sendMessage(message, {
         parse_mode: 'HTML',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

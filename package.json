@@ -37,6 +37,7 @@
     "axios": "^1.6.7",
     "class-validator": "^0.14.1",
     "csvtojson": "^2.0.10",
+    "dayjs": "^1.11.10",
     "nest-winston": "^1.9.4",
     "nestjs-i18n": "^10.4.5",
     "nestjs-telegraf": "^2.7.0",
