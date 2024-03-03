@@ -1,7 +1,5 @@
 import { I18nService } from 'nestjs-i18n';
 import { TelegramContext } from '../../../../../contexts/telegram.context';
-import { AnotherRequestKeyboardButton } from '../../../buttons/keyboard-buttons/user/registration/another-request.keyboard-button';
-import { ShareBotKeyboardButton } from '../../../buttons/keyboard-buttons/user/common/share-bot.keyboard-button';
 import { DetailedInlineButton } from '../../../buttons/inline-buttons/user/table/detailed.inline-button';
 import { MenuAction } from '../../common/menu.action';
 

@@ -276,7 +276,7 @@ export class TelegramRegistrationActionService {
       scores: getScores._sum.scores,
       year: +session.userInfo.selectedYear,
       nameIndex,
-      isAdmin: getUser.isAdmin,
+      isAdmin: !!getUser?.isAdmin,
     });
   }
 
@@ -311,7 +311,7 @@ export class TelegramRegistrationActionService {
       return;
     }
     const getScores = session.availableNames[nameIndex];
-    let text = 'Unknown';
+    let text = '';
     if (session.selectedTableYear === 2024) {
       const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
         SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
