@@ -3,6 +3,7 @@ import { TelegramContext } from '../../../../../contexts/telegram.context';
 import { AnotherRequestKeyboardButton } from '../../../buttons/keyboard-buttons/user/registration/another-request.keyboard-button';
 import { ShareBotKeyboardButton } from '../../../buttons/keyboard-buttons/user/common/share-bot.keyboard-button';
 import { DetailedInlineButton } from '../../../buttons/inline-buttons/user/table/detailed.inline-button';
+import { MenuAction } from '../../common/menu.action';
 
 export const GetScoreResultAction = async ({
   ctx,
@@ -11,6 +12,7 @@ export const GetScoreResultAction = async ({
   scores,
   year = 2024,
   nameIndex,
+  isAdmin = false,
 }: {
   ctx: TelegramContext;
   lang?: string;
@@ -18,6 +20,7 @@ export const GetScoreResultAction = async ({
   scores: string;
   year: number;
   nameIndex: string;
+  isAdmin: boolean;
 }): Promise<void> => {
   await ctx.reply(
     await i18n.translate('telegram.TOTAL_SCORES', {
@@ -30,15 +33,6 @@ export const GetScoreResultAction = async ({
     {
       parse_mode: 'HTML',
       reply_markup: {
-        resize_keyboard: true,
-        keyboard: [
-          await AnotherRequestKeyboardButton({
-            i18n,
-          }),
-          await ShareBotKeyboardButton({
-            i18n,
-          }),
-        ],
         inline_keyboard: [
           await DetailedInlineButton({
             lang,
@@ -49,4 +43,10 @@ export const GetScoreResultAction = async ({
       },
     },
   );
+  await MenuAction({
+    ctx,
+    i18n,
+    lang,
+    isAdmin,
+  });
 };

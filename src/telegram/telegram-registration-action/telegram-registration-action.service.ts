@@ -231,6 +231,7 @@ export class TelegramRegistrationActionService {
       },
       select: {
         id: true,
+        isAdmin: true,
       },
     });
     if (!getUser) {
@@ -269,12 +270,13 @@ export class TelegramRegistrationActionService {
     }
     const getScores = session.availableNames[nameIndex];
     session.userInfo.selectedFullName = getScores.fullName;
-    return await GetScoreResultAction({
+    await GetScoreResultAction({
       ctx,
       i18n: this.i18n,
       scores: getScores._sum.scores,
       year: +session.userInfo.selectedYear,
       nameIndex,
+      isAdmin: getUser.isAdmin,
     });
   }
 
