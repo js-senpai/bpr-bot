@@ -312,7 +312,7 @@ export class TelegramRegistrationActionService {
     }
     const getScores = session.availableNames[nameIndex];
     let text = '';
-    if (session.selectedTableYear === 2024) {
+    if (+session?.userInfo?.selectedYear === 2024) {
       const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
         SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
         FROM statistic_info_twenty_thousand_and_twenty_four AS info
@@ -329,7 +329,7 @@ export class TelegramRegistrationActionService {
             )} - ${theme}\n${cert_number} - <b>${scores}</b>`,
         )
         .join('\n\n');
-    } else if (session.selectedTableYear === 2023) {
+    } else if (+session?.userInfo?.selectedYear === 2023) {
       const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
         SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
         FROM statistic_info_twenty_thousand_and_twenty_three AS info
