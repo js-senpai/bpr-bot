@@ -149,7 +149,10 @@ export class TelegramRegistrationActionService {
                 },
                 {
                   fullName: {
-                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                    startsWith: `${lastName.replace(
+                      /'/g,
+                      "''",
+                    )} ${firstName[0].replace(/'/g, "''")}.`.toLowerCase(),
                   },
                 },
               ],
@@ -174,7 +177,10 @@ export class TelegramRegistrationActionService {
                 },
                 {
                   fullName: {
-                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                    startsWith: `${lastName.replace(
+                      /'/g,
+                      "''",
+                    )} ${firstName[0].replace(/'/g, "''")}.`.toLowerCase(),
                   },
                 },
               ],
@@ -318,7 +324,10 @@ export class TelegramRegistrationActionService {
         FROM statistic_info_twenty_thousand_and_twenty_four AS info
         INNER JOIN statistic_twenty_thousand_and_twenty_four AS stat
         ON info.event_number = stat.event_number
-        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
+        WHERE stat."fullName" = ${getScores.fullName
+          .toLowerCase()
+          .trim()
+          .replace(/'/g, "''")}
         ORDER BY info."dateStart" DESC;
     `;
       text = result
@@ -335,7 +344,10 @@ export class TelegramRegistrationActionService {
         FROM statistic_info_twenty_thousand_and_twenty_three AS info
         INNER JOIN statistic_twenty_thousand_and_twenty_three AS stat
         ON info.event_number = stat.event_number
-        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
+        WHERE stat."fullName" = ${getScores.fullName
+          .toLowerCase()
+          .trim()
+          .replace(/'/g, "''")}
         ORDER BY info."dateStart" DESC;
     `;
       text = result
