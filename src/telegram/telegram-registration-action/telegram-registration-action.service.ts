@@ -177,10 +177,11 @@ export class TelegramRegistrationActionService {
                 },
                 {
                   fullName: {
-                    startsWith: `${lastName.replace(
-                      /ʼ/g,
-                      "'",
-                    )} ${firstName[0].replace(/ʼ/g, "'")}.`.toLowerCase(),
+                    startsWith: `${lastName
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")} ${firstName[0]
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")}.`.toLowerCase(),
                   },
                 },
               ],
