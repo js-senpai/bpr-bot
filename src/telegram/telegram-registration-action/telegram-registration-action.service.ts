@@ -119,12 +119,20 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message.toLowerCase(),
+                    startsWith: message
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")
+                      .toLowerCase()
+                      .trim(),
                   },
                 },
                 {
                   fullName: {
-                    startsWith: `${lastName} ${firstName[0]}.`.toLowerCase(),
+                    startsWith: `${lastName
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")
+                      .toLowerCase()
+                      .trim()} ${firstName[0].toLowerCase()}`,
                   },
                 },
               ],
@@ -144,15 +152,20 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message.toLowerCase(),
+                    startsWith: message
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")
+                      .toLowerCase()
+                      .trim(),
                   },
                 },
                 {
                   fullName: {
-                    startsWith: `${lastName.replace(
-                      /'/g,
-                      "''",
-                    )} ${firstName[0].replace(/'/g, "''")}.`.toLowerCase(),
+                    startsWith: `${lastName
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")
+                      .toLowerCase()
+                      .trim()} ${firstName[0].toLowerCase()}`,
                   },
                 },
               ],
@@ -172,7 +185,11 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message.toLowerCase(),
+                    startsWith: message
+                      .replace(/'/g, "''")
+                      .replace(/ʼ/g, "''")
+                      .toLowerCase()
+                      .trim(),
                   },
                 },
                 {
@@ -181,11 +198,7 @@ export class TelegramRegistrationActionService {
                       .replace(/'/g, "''")
                       .replace(/ʼ/g, "''")
                       .toLowerCase()
-                      .trim()} ${firstName[0]
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")}.`
-                      .toLowerCase()
-                      .trim(),
+                      .trim()} ${firstName[0].toLowerCase()}`,
                   },
                 },
               ],
