@@ -178,9 +178,9 @@ export class TelegramRegistrationActionService {
                 {
                   fullName: {
                     startsWith: `${lastName.replace(
-                      /'/g,
-                      "''",
-                    )} ${firstName[0].replace(/'/g, "''")}.`.toLowerCase(),
+                      /ʼ/g,
+                      "'",
+                    )} ${firstName[0].replace(/ʼ/g, "'")}.`.toLowerCase(),
                   },
                 },
               ],
