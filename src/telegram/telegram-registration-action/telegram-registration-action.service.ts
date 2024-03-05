@@ -324,10 +324,7 @@ export class TelegramRegistrationActionService {
         FROM statistic_info_twenty_thousand_and_twenty_four AS info
         INNER JOIN statistic_twenty_thousand_and_twenty_four AS stat
         ON info.event_number = stat.event_number
-        WHERE stat."fullName" = ${getScores.fullName
-          .toLowerCase()
-          .trim()
-          .replace(/'/g, "''")}
+        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
         ORDER BY info."dateStart" DESC;
     `;
       text = result
@@ -344,10 +341,7 @@ export class TelegramRegistrationActionService {
         FROM statistic_info_twenty_thousand_and_twenty_three AS info
         INNER JOIN statistic_twenty_thousand_and_twenty_three AS stat
         ON info.event_number = stat.event_number
-        WHERE stat."fullName" = ${getScores.fullName
-          .toLowerCase()
-          .trim()
-          .replace(/'/g, "''")}
+        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
         ORDER BY info."dateStart" DESC;
     `;
       text = result
