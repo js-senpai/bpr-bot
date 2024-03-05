@@ -119,18 +119,13 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
-                      .toLowerCase()
-                      .trim(),
+                    startsWith: message.replace(/ʼ/g, "'").toLowerCase().trim(),
                   },
                 },
                 {
                   fullName: {
                     startsWith: `${lastName
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
+                      .replace(/ʼ/g, "'")
                       .toLowerCase()
                       .trim()} ${firstName[0].toLowerCase()}`,
                   },
@@ -152,18 +147,13 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
-                      .toLowerCase()
-                      .trim(),
+                    startsWith: message.replace(/ʼ/g, "'").toLowerCase().trim(),
                   },
                 },
                 {
                   fullName: {
                     startsWith: `${lastName
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
+                      .replace(/ʼ/g, "'")
                       .toLowerCase()
                       .trim()} ${firstName[0].toLowerCase()}`,
                   },
@@ -185,18 +175,13 @@ export class TelegramRegistrationActionService {
               OR: [
                 {
                   fullName: {
-                    startsWith: message
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
-                      .toLowerCase()
-                      .trim(),
+                    startsWith: message.replace(/ʼ/g, "'").toLowerCase().trim(),
                   },
                 },
                 {
                   fullName: {
                     startsWith: `${lastName
-                      .replace(/'/g, "''")
-                      .replace(/ʼ/g, "''")
+                      .replace(/ʼ/g, "'")
                       .toLowerCase()
                       .trim()} ${firstName[0].toLowerCase()}`,
                   },
