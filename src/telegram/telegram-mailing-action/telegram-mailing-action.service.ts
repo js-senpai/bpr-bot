@@ -43,7 +43,7 @@ export class TelegramMailingActionService {
     session.enableWritingMail = false;
     for (const { telegramId } of getUsers) {
       await delay(1000);
-      await ctx.sendMessage(message, {
+      ctx.sendMessage(message, {
         parse_mode: 'HTML',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
