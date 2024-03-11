@@ -7,7 +7,6 @@ import { ITelegramBodyWithMessage } from '../../common/interfaces/telegram.inter
 import { validateNameSurname } from '../../common/utils/common.utils';
 import { ErrorFullNameAction } from '../../common/components/telegram/actions/errors/error-full-name.action';
 import { ChooseYearAction } from '../../common/components/telegram/actions/user/registration/choose-year.action';
-import { PuppeteerService } from '../../common/services/puppeteer.service';
 import { SearchingAction } from '../../common/components/telegram/actions/common/searching.action';
 import { ConfigService } from '@nestjs/config';
 import { NotFoundUserAction } from '../../common/components/telegram/actions/errors/not-found-user.action';
