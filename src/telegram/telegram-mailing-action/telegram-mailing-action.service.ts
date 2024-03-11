@@ -41,6 +41,7 @@ export class TelegramMailingActionService {
       },
     });
     session.enableWritingMail = false;
+    session.enableMailing = false;
     for (const { telegramId } of getUsers) {
       await delay(1000);
       ctx.sendMessage(message, {
