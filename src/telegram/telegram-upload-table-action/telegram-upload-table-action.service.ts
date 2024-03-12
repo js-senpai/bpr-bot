@@ -10,7 +10,6 @@ import { SelectYearTableAction } from '../../common/components/telegram/actions/
 import { UploadingAction } from '../../common/components/telegram/actions/common/uploading.action';
 import { UploadedAction } from '../../common/components/telegram/actions/common/uploading-finished.action';
 import { ErrorFileSizeAction } from '../../common/components/telegram/actions/errors/error-file-size.action';
-import { delay } from '../../common/utils/common.utils';
 @Injectable()
 export class TelegramUploadTableActionService {
   constructor(
@@ -191,7 +190,6 @@ export class TelegramUploadTableActionService {
           );
         }
       }
-      await delay(1000);
     }
     await UploadedAction({
       ctx,

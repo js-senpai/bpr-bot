@@ -7,4 +7,7 @@ export const telegramConfig = async (
 ): Promise<TelegrafModuleOptions> => ({
   token: configService.get('TELEGRAM_BOT_TOKEN'),
   middlewares: [telegramSessionMiddleware],
+  options: {
+    handlerTimeout: Infinity,
+  },
 });
