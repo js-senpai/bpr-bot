@@ -8,7 +8,7 @@ export const GetScoreResultAction = async ({
   lang = 'ua',
   i18n,
   scores,
-  year = 2024,
+  year = 2025,
   nameIndex,
   isAdmin = false,
 }: {

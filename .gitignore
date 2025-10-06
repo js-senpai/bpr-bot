@@ -40,3 +40,4 @@ telegram-session.storage.json
 parser
 mysql.env
 tmp
+.history

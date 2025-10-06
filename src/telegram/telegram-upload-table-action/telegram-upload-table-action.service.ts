@@ -45,7 +45,7 @@ export class TelegramUploadTableActionService {
 
   async chooseYear({
     ctx,
-    year = 2024,
+    year = 2025,
   }: {
     ctx: TelegramContext;
     year: number;
@@ -129,7 +129,27 @@ export class TelegramUploadTableActionService {
     const getJson = await csv().fromStream(file);
     for (const item of getJson) {
       const getValues = Object.values(item);
-      if (ctx.session.selectedTableYear === 2024) {
+      if (ctx.session.selectedTableYear === 2025) {
+        if (getValues[2] && +getValues[0] && +getValues[1] && getValues[3]) {
+          await this.prismaService.statistic_twenty_thousand_and_twenty_five.upsert(
+            {
+              where: {
+                cert_number: getValues[2] as string,
+              },
+              update: {
+                scores: +getValues[4] || 0,
+              },
+              create: {
+                provider_number: +getValues[0],
+                event_number: +getValues[1],
+                cert_number: getValues[2] as string,
+                scores: +getValues[4] || 0,
+                fullName: (getValues[3] as string).trim().toLowerCase(),
+              },
+            },
+          );
+        }
+      } else if (ctx.session.selectedTableYear === 2024) {
         if (getValues[2] && +getValues[0] && +getValues[1] && getValues[3]) {
           await this.prismaService.statistic_twenty_thousand_and_twenty_four.upsert(
             {

@@ -109,7 +109,35 @@ export class TelegramRegistrationActionService {
     });
     const getFullNames = [];
     const [lastName, firstName] = message.split(' ');
-    if (+session?.userInfo?.selectedYear === 2024) {
+    if (+session?.userInfo?.selectedYear === 2025) {
+      getFullNames.push(
+        ...(await this.prismaService.statistic_twenty_thousand_and_twenty_five.groupBy(
+          {
+            by: ['fullName'],
+            where: {
+              OR: [
+                {
+                  fullName: {
+                    startsWith: message.replace(/ʼ/g, "'").toLowerCase().trim(),
+                  },
+                },
+                {
+                  fullName: {
+                    startsWith: `${lastName
+                      .replace(/ʼ/g, "'")
+                      .toLowerCase()
+                      .trim()} ${firstName[0].toLowerCase()}`,
+                  },
+                },
+              ],
+            },
+            _sum: {
+              scores: true,
+            },
+          },
+        )),
+      );
+    } else if (+session?.userInfo?.selectedYear === 2024) {
       getFullNames.push(
         ...(await this.prismaService.statistic_twenty_thousand_and_twenty_four.groupBy(
           {
@@ -320,7 +348,24 @@ export class TelegramRegistrationActionService {
     }
     const getScores = session.availableNames[nameIndex];
     let text = '';
-    if (+session?.userInfo?.selectedYear === 2024) {
+    if (+session?.userInfo?.selectedYear === 2025) {
+      const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
+        SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
+        FROM statistic_info_twenty_thousand_and_twenty_five AS info
+        INNER JOIN statistic_twenty_thousand_and_twenty_five AS stat
+        ON info.event_number = stat.event_number
+        WHERE stat."fullName" = ${getScores.fullName.toLowerCase().trim()}
+        ORDER BY info."dateStart" DESC;
+    `;
+      text = result
+        .map(
+          ({ scores, cert_number, theme, dateStart }) =>
+            `${dayjs(dateStart).format(
+              'DD.MM.YYYY',
+            )} - ${theme}\n${cert_number} - <b>${scores}</b>`,
+        )
+        .join('\n\n');
+    } else if (+session?.userInfo?.selectedYear === 2024) {
       const result: IDetailedTableData[] = await this.prismaService.$queryRaw`
         SELECT stat.scores,stat.cert_number, info.theme, info."dateStart"
         FROM statistic_info_twenty_thousand_and_twenty_four AS info

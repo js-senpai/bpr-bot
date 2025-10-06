@@ -48,7 +48,7 @@ export class TelegramUploadTableInfoActionService {
 
   async chooseYear({
     ctx,
-    year = 2024,
+    year = 2025,
   }: {
     ctx: TelegramContext;
     year: number;
@@ -132,7 +132,56 @@ export class TelegramUploadTableInfoActionService {
     const getJson: { [key: string]: string }[] = await csv().fromStream(file);
     for (const item of getJson) {
       const getValues = Object.values(item);
-      if (ctx.session.selectedTableYear === 2024) {
+      if (ctx.session.selectedTableYear === 2025) {
+        if (+getValues[1] && +getValues[2]) {
+          await this.prismaService.statistic_info_twenty_thousand_and_twenty_five.upsert(
+            {
+              where: {
+                event_number: +getValues[1],
+              },
+              update: {
+                provider_number: +getValues[2],
+                formType: getValues[5],
+                status: getValues[6],
+                type: getValues[4],
+                scores: getValues[7],
+                theme: getValues[3],
+                dateStart: dayjs(getValues[8], 'DD.MM.YYYY').toDate(),
+                dateEnd: dayjs(getValues[9], 'DD.MM.YYYY').toDate(),
+                profession: getValues[10],
+                provisorProfession: getValues[11],
+                juniorProfession: getValues[12],
+                seniorProfession: getValues[13],
+                location: getValues[15],
+                regLink: getValues[16],
+                providerLink: getValues[17],
+                providerMaintainer: getValues[18],
+                providerMaintainerPhone: getValues[19],
+              },
+              create: {
+                provider_number: +getValues[2],
+                event_number: +getValues[1],
+                formType: getValues[5],
+                status: getValues[6],
+                type: getValues[4],
+                scores: getValues[7],
+                theme: getValues[3],
+                dateStart: dayjs(getValues[8], 'DD.MM.YYYY').toDate(),
+                dateEnd: dayjs(getValues[9], 'DD.MM.YYYY').toDate(),
+                profession: getValues[10],
+                provisorProfession: getValues[11],
+                juniorProfession: getValues[12],
+                seniorProfession: getValues[13],
+                location: getValues[15],
+                regLink: getValues[16],
+                providerLink: getValues[17],
+                providerMaintainer: getValues[18],
+                providerMaintainerPhone: getValues[19],
+              },
+            },
+          );
+        }
+      } else if (ctx.session.selectedTableYear === 2024) {
         if (+getValues[1] && +getValues[2]) {
           await this.prismaService.statistic_info_twenty_thousand_and_twenty_four.upsert(
             {
